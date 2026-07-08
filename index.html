@@ -159,6 +159,16 @@ body { background: var(--bg); color: var(--ink); font-family: -apple-system, Bli
 .branch-chip { display: inline-block; margin-top: 7px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; background: var(--purple-lt); color: var(--purple); }
 .step-arrow { display: flex; align-items: center; padding: 60px 5px 0; color: var(--arrow-color); flex-shrink: 0; }
 
+/* FORK */
+.fork-col { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+.fork-title { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple); text-align: center; }
+.fork-card { width: 190px; background: var(--card); border: 1.5px dashed var(--purple); border-radius: 10px; padding: 8px 10px; cursor: pointer; transition: var(--transition); user-select: none; display: flex; gap: 8px; align-items: center; }
+.fork-card:hover { background: var(--purple-lt); }
+.fork-card.active { border-style: solid; background: var(--purple-lt); }
+.fork-card img { width: 56px; border-radius: 4px; border: 1px solid var(--rule); flex-shrink: 0; }
+.fork-card-label { font-size: 10px; font-weight: 700; color: var(--purple); margin-bottom: 2px; }
+.fork-card-name { font-size: 10.5px; font-weight: 600; line-height: 1.3; color: var(--ink); }
+
 /* ACCORDIONS */
 details.acc { border: 1px solid var(--rule); border-radius: 10px; background: var(--card); margin-top: 14px; overflow: hidden; }
 details.acc summary { list-style: none; cursor: pointer; padding: 13px 16px; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; gap: 10px; user-select: none; transition: var(--transition); }
@@ -360,7 +370,7 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
       <div class="timeline-wrap"><div class="timeline" id="timeline-v0"></div></div>
 
       <details class="acc">
-        <summary>Step 01 split — three onboarding paths <span class="acc-count">3 branches</span><span class="acc-caret">▾</span></summary>
+        <summary>Step 02 paths in full detail — chat / wizard / skip <span class="acc-count">3 branches</span><span class="acc-caret">▾</span></summary>
         <div class="acc-body">
           <div class="variant-strip">
             <div class="variant-card">
@@ -387,7 +397,7 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
       </details>
 
       <details class="acc">
-        <summary>Step 05 prompt variants — template as reference, user adds instructions <span class="acc-count">2 variants</span><span class="acc-caret">▾</span></summary>
+        <summary>Step 04 prompt variants — template as reference, user adds instructions <span class="acc-count">2 variants</span><span class="acc-caret">▾</span></summary>
         <div class="acc-body">
           <div class="variant-strip">
             <div class="variant-card">
@@ -679,14 +689,17 @@ const FR_DATA = {
 };
 
 const STEPS_V0 = [
-  { id:'v0s1', num:'01', name:'Onboarding Entry — 3-way split', desc:'"Let\'s personalize your journey" — Chat with AI / Set up without Chat / Skip. Each path collects a different amount of info.', frs:['FR-001'], img:'v0dash', imgCaption:'Onboarding entry — Chat with AI / Set up without Chat / Skip (top-right)', branch:'3 branches ↓' },
-  { id:'v0s2', num:'02', name:'Wizard Q — What is your site about?', desc:'Branch B (Set up without Chat). Full-page question. Free-text + category pills. Skip + Continue.', frs:['FR-003','FR-006'], img:'v0qa1', imgCaption:'"First, what is your site all about?" — free text + category pills' },
-  { id:'v0s3', num:'03', name:'Wizard Q — What do you want to call your site?', desc:'Branch B. Full-page question. Free-text + AI name suggestions. Skip + Continue.', frs:['FR-002','FR-006'], img:'v0qa2', imgCaption:'"What do you want to call your site?" — name input + AI suggestions' },
-  { id:'v0s4', num:'04', name:'Dashboard — "Welcome, Netta"', desc:'All branches converge here. Business setup checklist. User clicks "Design Site" to continue.', frs:['FR-001'], img:'v0dash2', imgCaption:'Dashboard "Welcome, Netta" — setup checklist, Design Site button' },
-  { id:'v0s5', num:'05', name:'"Design your site with Aria"', desc:'"Your prompt is ready." Prompt pre-seeded from whatever the chosen branch collected. User can read, edit, append. Templates below.', frs:['FR-001','FR-004'], img:'v0s3b', imgCaption:'Template-seeded prompt — "Your prompt is ready." editable bakery prompt', branch:'2 variants ↓' },
-  { id:'v0s6', num:'06', name:'Template Gallery', desc:'AI-filtered grid by category. "Or, start from a recommended template." Hover shows Edit / View.', frs:['FR-001','FR-005'], img:'v0s4', imgCaption:'Recommended template grid — bakery category, hover Edit / View' },
-  { id:'v0s7', num:'07', name:'Generation Loader', desc:'Progress modal over blurred template. "Adding Wix Table Reservations — (2/13) Adding finishing touches…"', frs:['FR-007'], img:'v0s5', imgCaption:'Progress modal over frosted template — "(2/13)"' },
-  { id:'v0s8', num:'08', name:'Editor — Injected Result', desc:'Template personalized. Domain suggested ("realbabka.com is available!"). Aria: "Hi Netta, let\'s work together to build your site." + next steps.', frs:['FR-008','FR-009'], img:'v0s6', imgCaption:'Injected result — Babka bakery site, domain suggestion, Aria next steps' }
+  { id:'v0s1', num:'01', name:'Onboarding Entry — 3-way split', desc:'"Let\'s personalize your journey" — Chat with AI / Set up without Chat / Skip. Each path collects a different amount of info.', frs:['FR-001'], img:'v0dash', imgCaption:'Onboarding entry — Chat with AI / Set up without Chat / Skip (top-right)' },
+  { fork: [
+    { id:'v0fA', num:'02 · A', name:'Chat with AI → conversation', desc:'Open conversation — NOT the wizard: "First, tell me what your site is all about" → business name → follow-ups. Site Profile builds live on the left. Help me answer / Skip question / End Chat & Continue.', frs:['FR-001'], img:'v0chat1', imgCaption:'Chat conversation — Site Profile builds live (data source for UC 1.2 auto-inject)', forkLabel:'Chat with AI' },
+    { id:'v0fB', num:'02 · B', name:'Set up without Chat → wizard', desc:'Old funnel wizard, 2 full-page questions: "What is your site all about?" (category pills) → "What do you want to call your site?" (AI name suggestions). Each skippable.', frs:['FR-002','FR-003','FR-006'], img:'v0qa1', imgCaption:'Wizard funnel — full-page questions with pills and name suggestions', forkLabel:'Set up without Chat' },
+    { id:'v0fC', num:'02 · C', name:'Skip → one question only', desc:'"Choose a main feature for your site" (Online store, Scheduling, Blog, Restaurant…) — single question, then straight to dashboard. Minimal context → vanilla prompt later.', frs:['FR-006'], img:'v0skip', imgCaption:'Skip branch — single "Choose a main feature" question', forkLabel:'Skip' }
+  ]},
+  { id:'v0s4', num:'03', name:'Dashboard — "Welcome, Netta"', desc:'All three paths converge here. Business setup checklist. User clicks "Design Site" to continue.', frs:['FR-001'], img:'v0dash2', imgCaption:'Dashboard "Welcome, Netta" — setup checklist, Design Site button' },
+  { id:'v0s5', num:'04', name:'"Design your site with Aria"', desc:'"Your prompt is ready." Prompt pre-seeded from whatever the chosen path collected. User can read, edit, append. Templates below.', frs:['FR-001','FR-004'], img:'v0s3b', imgCaption:'Template-seeded prompt — "Your prompt is ready." editable bakery prompt', branch:'2 variants ↓' },
+  { id:'v0s6', num:'05', name:'Template Gallery', desc:'AI-filtered grid by category. "Or, start from a recommended template." Hover shows Edit / View.', frs:['FR-001','FR-005'], img:'v0s4', imgCaption:'Recommended template grid — bakery category, hover Edit / View' },
+  { id:'v0s7', num:'06', name:'Generation Loader', desc:'Progress modal over blurred template. "Adding Wix Table Reservations — (2/13) Adding finishing touches…"', frs:['FR-007'], img:'v0s5', imgCaption:'Progress modal over frosted template — "(2/13)"' },
+  { id:'v0s8', num:'07', name:'Editor — Injected Result', desc:'Template personalized. Domain suggested ("realbabka.com is available!"). Aria: "Hi Netta, let\'s work together to build your site." + next steps.', frs:['FR-008','FR-009'], img:'v0s6', imgCaption:'Injected result — Babka bakery site, domain suggestion, Aria next steps' }
 ];
 
 const STEPS_V11 = [
@@ -711,24 +724,42 @@ function priorityClass(p) {
 function buildTimeline(steps, containerId) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
+  const arrowSvg = `<svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M0 7h14M9 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   steps.forEach((step, i) => {
     const wrap = document.createElement('div');
     wrap.className = 'step-wrap';
-    const card = document.createElement('div');
-    card.className = 'step-card';
-    card.id = step.id;
-    card.innerHTML = `
-      <div class="step-num">Step ${step.num}</div>
-      ${step.img && IMG[step.img] ? `<img class="step-thumb" src="${IMG[step.img]}" alt="${step.name}" loading="lazy">` : ''}
-      <div class="step-name">${step.name}</div>
-      ${step.branch ? `<span class="branch-chip">+ ${step.branch}</span>` : ''}
-    `;
-    card.addEventListener('click', () => openDetail(step));
-    wrap.appendChild(card);
+    if (step.fork) {
+      const col = document.createElement('div');
+      col.className = 'fork-col';
+      col.innerHTML = '<div class="fork-title">Step 02 — path splits</div>';
+      step.fork.forEach(b => {
+        const fc = document.createElement('div');
+        fc.className = 'fork-card';
+        fc.id = b.id;
+        fc.innerHTML = `
+          ${b.img && IMG[b.img] ? `<img src="${IMG[b.img]}" alt="${b.name}" loading="lazy">` : ''}
+          <div><div class="fork-card-label">${b.forkLabel}</div><div class="fork-card-name">${b.name}</div></div>`;
+        fc.addEventListener('click', () => openDetail(b));
+        col.appendChild(fc);
+      });
+      wrap.appendChild(col);
+    } else {
+      const card = document.createElement('div');
+      card.className = 'step-card';
+      card.id = step.id;
+      card.innerHTML = `
+        <div class="step-num">Step ${step.num}</div>
+        ${step.img && IMG[step.img] ? `<img class="step-thumb" src="${IMG[step.img]}" alt="${step.name}" loading="lazy">` : ''}
+        <div class="step-name">${step.name}</div>
+        ${step.branch ? `<span class="branch-chip">+ ${step.branch}</span>` : ''}
+      `;
+      card.addEventListener('click', () => openDetail(step));
+      wrap.appendChild(card);
+    }
     if (i < steps.length - 1) {
       const arrow = document.createElement('div');
       arrow.className = 'step-arrow';
-      arrow.innerHTML = `<svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M0 7h14M9 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      arrow.innerHTML = arrowSvg;
       wrap.appendChild(arrow);
     }
     container.appendChild(wrap);
@@ -856,7 +887,10 @@ document.getElementById('lightbox').addEventListener('click', () => document.get
 
 // Play mode
 let playIdx = 0;
-function playSteps() { return currentTab === 'v0' ? STEPS_V0 : STEPS_V11; }
+function playSteps() {
+  const raw = currentTab === 'v0' ? STEPS_V0 : STEPS_V11;
+  return raw.flatMap(s => s.fork ? s.fork : [s]);
+}
 function openPlay() {
   playIdx = 0;
   document.getElementById('play').classList.add('open');
