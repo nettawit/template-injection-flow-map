@@ -130,7 +130,7 @@ body { background: var(--bg); color: var(--ink); font-family: -apple-system, Bli
 .flow-chip.v11 { background: var(--badge-v11-bg); color: var(--badge-v11-ink); }
 
 /* MAIN */
-.main { display: flex; min-height: 60vh; }
+.main { display: flex; min-height: 60vh; max-width: 1800px; margin: 0 auto; width: 100%; }
 .flow-area { flex: 1; min-width: 0; overflow: hidden; }
 .detail-panel { width: 0; overflow: hidden; border-left: 1px solid var(--rule); background: var(--detail-bg); transition: width 0.25s cubic-bezier(.4,0,.2,1); flex-shrink: 0; }
 .detail-panel.open { width: 420px; overflow-y: auto; }
@@ -138,6 +138,21 @@ body { background: var(--bg); color: var(--ink); font-family: -apple-system, Bli
 
 .flow-content { display: none; padding: 24px 20px 48px; }
 .flow-content.active { display: block; }
+
+/* LARGE SCREEN */
+@media (min-width: 1400px) {
+  body { font-size: 15px; }
+  .flow-content { padding: 32px 40px 64px; }
+  .step-card { width: 220px; }
+  .fork-card { width: 230px; }
+  .fork-card img { width: 70px; }
+  .detail-panel.open { width: 500px; }
+  .hero { padding: 56px 32px 44px; max-width: 1000px; }
+  .hero-frame { width: 240px; }
+  .overview-inner { padding: 36px 48px; gap: 32px; }
+  .topbar { padding: 0 40px; }
+  .flow-tabs { padding: 0 40px; }
+}
 .flow-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
 .flow-title { font-size: 13px; font-weight: 700; }
 .entry-pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 1px dashed var(--rule); color: var(--ink-2); }
