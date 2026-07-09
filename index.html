@@ -282,6 +282,23 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
 .dp-codebase { background: var(--uc-bg); border-radius: 6px; padding: 10px 12px; margin-bottom: 4px; font-size: 11px; color: var(--ink-2); line-height: 1.6; }
 .dp-codebase strong { color: var(--ink); font-size: 10px; font-weight: 700; }
 
+/* OPEN QUESTIONS */
+.oq { max-width: 980px; margin: 0 auto; padding: 32px 24px 48px; }
+.oq-head { text-align: center; margin-bottom: 20px; }
+.oq-title { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; }
+.oq-sub { font-size: 12px; color: var(--ink-2); margin-top: 4px; }
+.oq-cols { display: flex; gap: 20px; }
+@media (max-width: 720px) { .oq-cols { flex-direction: column; } }
+.oq-col { flex: 1; min-width: 0; }
+.oq-col-head { margin-bottom: 10px; }
+.oq-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
+.oq-badge.dec { background: var(--pri-critical-lt); color: var(--pri-critical); }
+.oq-badge.dep { background: var(--pri-must-lt); color: var(--pri-must); }
+.oq-card { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+.oq-q { font-size: 12.5px; font-weight: 700; line-height: 1.4; }
+.oq-meta { font-size: 11px; color: var(--ink-2); line-height: 1.5; margin-top: 5px; }
+.oq-meta b { color: var(--ink); font-weight: 600; }
+
 /* LIGHTBOX */
 .lightbox { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.82); display: none; align-items: center; justify-content: center; padding: 32px; cursor: zoom-out; }
 .lightbox.open { display: flex; }
@@ -334,6 +351,7 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
   <div class="topbar-right">
     <button class="btn btn-play" onclick="openPlay()">▶ Play walkthrough</button>
     <a class="btn" href="https://www.figma.com/design/JojXJSlNU01Ji3HQGD7kDe/Harmony-Funnel-Template-Injection?node-id=17340-11245" target="_blank" rel="noopener">Open Figma map ↗</a>
+    <a class="btn" href="#open-questions" onclick="document.getElementById('open-questions').scrollIntoView({behavior:'smooth'});return false;">⚠ Open questions</a>
     <button class="btn" id="toggleOverview">Deep dive ↓</button>
   </div>
 </div>
@@ -635,6 +653,54 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
 
   <!-- DETAIL PANEL -->
   <div class="detail-panel" id="detailPanel"><div id="dpInner"></div></div>
+</div>
+
+<!-- OPEN QUESTIONS -->
+<div class="oq" id="open-questions">
+  <div class="oq-head">
+    <div class="oq-title">Open questions &amp; decisions</div>
+    <div class="oq-sub">What's still undecided or unconfirmed — as of this version. Owners shown by role.</div>
+  </div>
+  <div class="oq-cols">
+    <div class="oq-col">
+      <div class="oq-col-head"><span class="oq-badge dec">Product / UX decisions</span></div>
+      <div class="oq-card">
+        <div class="oq-q">Should the gallery-pick flow also auto-inject — skipping the questions entirely?</div>
+        <div class="oq-meta">No clear reason a user would decline personalization; needs a product call · <b>Product lead</b></div>
+      </div>
+      <div class="oq-card">
+        <div class="oq-q">How do we ask for missing info — modal (pre-filled) or an Aria composer question on editor entry?</div>
+        <div class="oq-meta">Experience decision; same choice covers the vanilla user who gave nothing · <b>UX</b></div>
+      </div>
+      <div class="oq-card">
+        <div class="oq-q">Are there more surfaces for Template Injection beyond the two entry points?</div>
+        <div class="oq-meta">Waiting on the funnel team · <b>Funnel team</b></div>
+      </div>
+      <div class="oq-card">
+        <div class="oq-q">V0 funnel-data carry-over into the editor.</div>
+        <div class="oq-meta">Not developed yet in V0 (already works in V1.1) · <b>V0 dev</b></div>
+      </div>
+    </div>
+    <div class="oq-col">
+      <div class="oq-col-head"><span class="oq-badge dep">Dependencies / unknowns</span></div>
+      <div class="oq-card">
+        <div class="oq-q">Dynamic context injection — does it exist?</div>
+        <div class="oq-meta">Aria's context is static today; injecting name/type at template-select doesn't exist yet. Hard blocker for FR-001 · <b>Aria platform</b></div>
+      </div>
+      <div class="oq-card">
+        <div class="oq-q">AI2Wix input contract + what the Business insights platform actually contains.</div>
+        <div class="oq-meta">Fields, session lifetime, accepted inputs and response shape unverified · <b>Dev · Funnel team</b></div>
+      </div>
+      <div class="oq-card">
+        <div class="oq-q">New skill or a mode of the existing Orchestrator?</div>
+        <div class="oq-meta">Affects the skill-exit reliability risk; mode is preferred · <b>Dev</b></div>
+      </div>
+      <div class="oq-card">
+        <div class="oq-q">Real p95 latency of an AI2Wix personalization call?</div>
+        <div class="oq-meta">Spec assumes ≤30s — unverified · <b>Dev · Data</b></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="lightbox" id="lightbox"><img id="lightboxImg" alt="Screenshot zoom"></div>
