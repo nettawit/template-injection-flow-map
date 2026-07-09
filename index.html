@@ -157,7 +157,7 @@ body { background: var(--bg); color: var(--ink); font-family: -apple-system, Bli
 .flow-chip.v11 { background: var(--badge-v11-bg); color: var(--badge-v11-ink); }
 
 /* MAIN */
-.main { display: flex; min-height: 60vh; max-width: 1800px; margin: 0 auto; width: 100%; }
+.main { display: flex; min-height: 60vh; }
 .flow-area { flex: 1; min-width: 0; overflow: hidden; }
 .detail-panel { width: 0; overflow: hidden; border-left: 1px solid var(--rule); background: var(--detail-bg); transition: width 0.25s cubic-bezier(.4,0,.2,1); flex-shrink: 0; }
 .detail-panel.open { width: 420px; overflow-y: auto; }
@@ -165,52 +165,6 @@ body { background: var(--bg); color: var(--ink); font-family: -apple-system, Bli
 
 .flow-content { display: none; padding: 24px 20px 48px; }
 .flow-content.active { display: block; }
-
-/* LARGE SCREEN */
-@media (min-width: 1400px) {
-  body { font-size: 15px; }
-
-  /* Topbar + tabs stretch full width but with more breathing room */
-  .topbar { padding: 0 48px; min-height: 58px; }
-  .flow-tabs { padding: 0 48px; }
-
-  /* Hero becomes side-by-side: text left, frames right */
-  .hero {
-    max-width: 1600px;
-    padding: 56px 48px 48px;
-    text-align: left;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto;
-    column-gap: 64px;
-    align-items: center;
-  }
-  .hero-left { display: contents; }
-  .hero-eyebrow { grid-column: 1; }
-  .hero h1 { grid-column: 1; font-size: clamp(28px, 2.4vw, 40px); max-width: 560px; }
-  .hero p { grid-column: 1; text-align: left; margin: 0 0 24px; max-width: 520px; }
-  .hero-strip {
-    grid-column: 2;
-    grid-row: 1 / 5;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 0;
-    gap: 10px;
-  }
-  .hero-frame { width: 220px; }
-  .hero-cta { grid-column: 1; justify-self: start; }
-  .role-hints { grid-column: 1; text-align: left; }
-
-  /* Flow workspace */
-  .main { max-width: 100%; }
-  .flow-content { padding: 32px 48px 64px; }
-  .step-card { width: 210px; }
-  .fork-card { width: 220px; }
-  .fork-card img { width: 68px; }
-  .detail-panel.open { width: 500px; }
-  .overview-inner { padding: 36px 48px; gap: 32px; max-width: 1600px; margin: 0 auto; }
-}
 .flow-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
 .flow-title { font-size: 13px; font-weight: 700; }
 .entry-pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 1px dashed var(--rule); color: var(--ink-2); }
@@ -344,6 +298,46 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
 .play-dots { display: flex; gap: 6px; }
 .play-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; }
 .play-dots span.on { background: var(--accent); }
+/* BIG SCREENS */
+@media (min-width: 1400px) {
+  .topbar { padding: 0 48px; min-height: 58px; }
+  .flow-tabs { padding: 0 48px; }
+  .hero {
+    max-width: 1600px;
+    padding: 56px 48px 48px;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto;
+    column-gap: 64px;
+    align-items: center;
+  }
+  .hero-eyebrow { grid-column: 1; }
+  .hero h1 { grid-column: 1; font-size: clamp(28px, 2.4vw, 40px); max-width: 560px; }
+  .hero p { grid-column: 1; text-align: left; margin: 0 0 24px; max-width: 520px; }
+  .hero-strip {
+    grid-column: 2;
+    grid-row: 1 / 5;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 0;
+    gap: 10px;
+  }
+  .hero-frame { width: 220px; }
+  .hero-cta { grid-column: 1; justify-self: start; }
+  .role-hints { grid-column: 1; text-align: left; }
+  .main { max-width: 100%; }
+  .flow-content { padding: 32px 48px 64px; }
+  .step-card { width: 210px; }
+  .fork-card { width: 220px; }
+  .fork-card img { width: 68px; }
+  .overview-inner { padding: 36px 48px; gap: 32px; max-width: 1600px; margin: 0 auto; }
+  .logic { max-width: 1100px; }
+  .logic-cols { gap: 40px; }
+  .logic-col { max-width: 500px; }
+}
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
