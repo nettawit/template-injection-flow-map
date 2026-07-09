@@ -302,31 +302,8 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
 @media (min-width: 1400px) {
   .topbar { padding: 0 48px; min-height: 58px; }
   .flow-tabs { padding: 0 48px; }
-  .hero {
-    max-width: 1600px;
-    padding: 56px 48px 48px;
-    text-align: left;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto;
-    column-gap: 64px;
-    align-items: center;
-  }
-  .hero-eyebrow { grid-column: 1; }
-  .hero h1 { grid-column: 1; font-size: clamp(28px, 2.4vw, 40px); max-width: 560px; }
-  .hero p { grid-column: 1; text-align: left; margin: 0 0 24px; max-width: 520px; }
-  .hero-strip {
-    grid-column: 2;
-    grid-row: 1 / 5;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 0;
-    gap: 10px;
-  }
-  .hero-frame { width: 220px; }
-  .hero-cta { grid-column: 1; justify-self: start; }
-  .role-hints { grid-column: 1; text-align: left; }
+  .hero { max-width: 1600px; padding: 56px 48px 40px; }
+  .hero h1 { font-size: clamp(28px, 2.4vw, 40px); }
   .main { max-width: 100%; }
   .flow-content { padding: 32px 48px 64px; }
   .step-card { width: 210px; }
@@ -358,22 +335,6 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
   <div class="hero-eyebrow">Wix Harmony · Aria · Template Injection</div>
   <h1>From picked template to personalized site — in two questions.</h1>
   <p>Today, choosing a template drops the user into an <strong>empty, disconnected editor</strong> — the selection signal is lost. Template Injection makes Aria greet the user with a short intake (<strong>business name → business type</strong>), then personalizes the chosen template automatically before editing starts.</p>
-  <div class="hero-strip">
-    <div class="hero-frame">
-      <img data-img="v0s4" alt="User picks a template" onclick="openLightbox('v0s4')">
-      <div class="hero-frame-label">1 · User picks a template</div>
-    </div>
-    <div class="hero-arrow"><svg width="26" height="16" viewBox="0 0 26 16" fill="none"><path d="M0 8h22M16 2l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div class="hero-frame">
-      <img data-img="v11s1" alt="Aria asks two questions" onclick="openLightbox('v11s1')">
-      <div class="hero-frame-label">2 · Aria asks 2 questions</div>
-    </div>
-    <div class="hero-arrow"><svg width="26" height="16" viewBox="0 0 26 16" fill="none"><path d="M0 8h22M16 2l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div class="hero-frame">
-      <img data-img="v11s6" alt="Personalized site is ready" onclick="openLightbox('v11s6')">
-      <div class="hero-frame-label">3 · "Your site is ready"</div>
-    </div>
-  </div>
   <a class="hero-cta" href="#flows" onclick="document.getElementById('flows').scrollIntoView({behavior:'smooth'});return false;">Explore the flows ↓</a>
   <div class="role-hints"><b>UX?</b> Walk steps 2–4 of each flow. · <b>Dev?</b> Open FR-001 &amp; FR-008 in any step panel. · <b>PM?</b> Hit "Deep dive" top right.</div>
 </div>
