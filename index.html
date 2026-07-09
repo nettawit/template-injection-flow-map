@@ -350,62 +350,101 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
 <!-- FLOW LOGIC -->
 <div class="logic" id="logic">
   <div class="logic-head">
-    <div class="logic-title">How it decides — V0 vs V1.1</div>
-    <div class="logic-sub">The decisions and rules behind both versions — the parts the screens don't show. Click any box to expand. The step-by-step screens are below.</div>
+    <div class="logic-title">How it works — flow logic</div>
+    <div class="logic-sub">The decision layer behind both flows. Click any box for the detail.</div>
   </div>
+  <div class="logic-cols">
 
-  <div class="logic-block">
-    <div class="logic-block-label">1 · Where the data comes from</div>
-    <div class="logic-two">
-      <div class="logic-node lg-system" onclick="this.classList.toggle('open')">
-        <div class="ln-tag v0">V0 — dashboard first</div>
-        <div class="ln-name">Funnel runs before the editor → Business insights platform</div>
-        <div class="ln-sub">we pull the answers and check what's missing</div>
-        <div class="ln-note">The funnel (chat / wizard / skip) collects name · type · goals · etc. before the editor. Answers are stored in the Business insights platform — built and owned by the funnel team. We pull from it and check completeness. Carry-over into the V0 editor is not developed yet.</div>
-      </div>
-      <div class="logic-node lg-system" onclick="this.classList.toggle('open')">
-        <div class="ln-tag v11">V1.1 — editor first</div>
-        <div class="ln-name">Funnel runs inside the editor (Aria composer)</div>
-        <div class="ln-sub">answers already in the session — no platform pull</div>
-        <div class="ln-note">Aria asks the intake questions directly in the composer. The answers live in the editor session and travel with it — there is no Business insights platform pull. Carry-over is already developed in V1.1.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="logic-block">
-    <div class="logic-block-label">2 · The injection decision</div>
-    <div class="logic-two">
-      <div class="logic-node lg-good" onclick="this.classList.toggle('open')">
-        <div class="ln-name">Data complete → seamless injection</div>
-        <div class="ln-sub">no questions asked. ever.</div>
-        <div class="ln-note">When business name + type are present, content is injected into the chosen template automatically — the user is never interrupted.</div>
-      </div>
-      <div class="logic-node lg-open" onclick="this.classList.toggle('open')">
-        <div class="ln-name">Data missing → ask only what's missing, then inject</div>
-        <div class="ln-sub">how we ask is an open decision</div>
-        <div class="ln-open-pill">open decision</div>
-        <div class="ln-note"><strong>How to ask is undecided:</strong> a modal over the editor (can show known details pre-filled — not the focus now) or an Aria composer question on editor entry. Same decision covers the vanilla user who provided nothing. Skipping is always allowed → falls back to category-level personalization.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="logic-block">
-    <div class="logic-block-label">3 · Rules that always apply</div>
-    <div class="logic-two">
+    <div class="logic-col">
+      <div class="logic-col-head"><span class="flow-chip v0">V0</span> Dashboard first</div>
       <div class="logic-node" onclick="this.classList.toggle('open')">
-        <div class="ln-name">Editor behaviour differs by version</div>
-        <div class="ln-sub">V0 creation mode · V1.1 reload</div>
-        <div class="ln-note"><strong>V0:</strong> editor opens in creation mode — everything disabled, Add panel hidden, until injection completes. <strong>V1.1:</strong> picking a template must load the template editor (a different editor) — the previous one is coupled to a blank site and can't render the template.</div>
+        <div class="ln-name">Top-funnel questions</div>
+        <div class="ln-sub">name · type · goals · etc.</div>
+        <div class="ln-note">Collected in the dashboard funnel (chat / wizard / skip). Business name + type are critical for injection; description and goals help the AI reach better content.</div>
       </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node" onclick="this.classList.toggle('open')">
+        <div class="ln-name">User chooses</div>
+        <div class="ln-sub">prompt / template</div>
+        <div class="ln-note">On the "Design your site with Aria" page — either generate from the seeded, editable prompt or pick a template from the AI-filtered gallery.</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node lg-system" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Business insights platform</div>
+        <div class="ln-sub">is the data complete?</div>
+        <div class="ln-note">Built and owned by the funnel team — we pull the funnel answers from it and check what's missing. <strong>V0 only:</strong> in V1.1 the questions happen inside the editor, so the answers are already in the session and there is no platform pull.</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-split">
+        <div class="logic-node lg-good" onclick="this.classList.toggle('open')">
+          <div class="ln-name">Complete</div>
+          <div class="ln-sub">seamless injection</div>
+          <div class="ln-note">All info present → content is injected into the site with no questions asked. Ever.</div>
+        </div>
+        <div class="logic-node lg-open" onclick="this.classList.toggle('open')">
+          <div class="ln-name">Data missing</div>
+          <div class="ln-sub">ask missing Qs → inject</div>
+          <div class="ln-open-pill">open decision</div>
+          <div class="ln-note">Only the missing questions are asked. <strong>How is an open experience decision:</strong> a modal over the editor (can show known details pre-filled — not the focus now) or an Aria composer question on editor entry. Same decision applies to the vanilla user who provided nothing.</div>
+        </div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Editor opens — creation mode</div>
+        <div class="ln-sub">all disabled until injection done</div>
+        <div class="ln-note">Everything is disabled and the Add panel is not exposed while injection runs. Funnel-data carry-over into this editor is not developed yet in V0.</div>
+      </div>
+    </div>
+
+    <div class="logic-col">
+      <div class="logic-col-head"><span class="flow-chip v11">V1.1</span> Editor first</div>
+      <div class="logic-node" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Editor opens — Aria composer</div>
+        <div class="ln-sub">questions inside the editor</div>
+        <div class="ln-note">Aria asks the intake questions (name → type) directly in the composer panel. Answer carry-over is already developed in V1.1.</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Templates shown</div>
+        <div class="ln-sub">user chooses one</div>
+        <div class="ln-note">Grid filtered by the user's answers ("Design with AI" is the alternative path — out of Template Injection scope).</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node lg-system" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Open another editor</div>
+        <div class="ln-sub">template editor — full reload</div>
+        <div class="ln-note">The editor the user was in is coupled to a blank site — it cannot render the chosen template. Picking a template must load the template editor (a different editor).</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node lg-good" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Content injection</div>
+        <div class="ln-sub">answers already in the session</div>
+        <div class="ln-note">The intake answers travel with the session into the template editor — injection runs on them directly, no platform pull needed.</div>
+      </div>
+      <div class="logic-arrow">↓</div>
       <div class="logic-node lg-apps" onclick="this.classList.toggle('open')">
-        <div class="ln-name">Apps — silent, in the background</div>
-        <div class="ln-sub">install bundle · add from prompt · never remove</div>
-        <div class="ln-note">Apps bundled with the template are installed silently (lightweight, no confirmation). Apps implied by the prompt (e.g. bookings) are added for the user. Apps are never removed — no removal path exists in this flow.</div>
+        <div class="ln-name">Background app install</div>
+        <div class="ln-sub">if prompt needs app not in template</div>
+        <div class="ln-note">If the user's prompt implies functionality the template doesn't have (e.g. bookings), the app is installed for them silently in the background.</div>
       </div>
     </div>
   </div>
 
-  <div class="logic-hint">Both versions end at the same state — a personalized site with Aria's "Your site is ready" handoff. See the screens below for every step in full.</div>
+  <div class="logic-merge">
+    <div class="logic-arrow">↓</div>
+    <div class="logic-node lg-good" onclick="this.classList.toggle('open')">
+      <div class="ln-name">Personalized site ready</div>
+      <div class="ln-sub">same end state for both flows</div>
+      <div class="ln-note">Template personalized with the user's content; Aria shows "Your site is ready" + next steps.</div>
+    </div>
+    <div class="logic-arrow">↓</div>
+    <div class="logic-node lg-apps" onclick="this.classList.toggle('open')">
+      <div class="ln-name">Apps rules — both flows</div>
+      <div class="ln-sub">silent install · add from prompt · never remove</div>
+      <div class="ln-note">Apps bundled with the template are installed silently (lightweight, no confirmation). Apps implied by the prompt are added. Apps are never removed — no removal path exists in this flow.</div>
+    </div>
+  </div>
+  <div class="logic-hint">Click any box to expand its detail · scroll down for the screen-by-screen flows</div>
 </div>
 
 <!-- DEEP OVERVIEW -->
