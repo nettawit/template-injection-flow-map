@@ -107,6 +107,33 @@ body { background: var(--bg); color: var(--ink); font-family: -apple-system, Bli
 .role-hints { margin-top: 18px; font-size: 11.5px; color: var(--ink-3); }
 .role-hints b { color: var(--ink-2); font-weight: 600; }
 
+/* FLOW LOGIC */
+.logic { max-width: 980px; margin: 0 auto; padding: 8px 24px 40px; }
+.logic-head { text-align: center; margin-bottom: 20px; }
+.logic-title { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; }
+.logic-sub { font-size: 12px; color: var(--ink-2); margin-top: 4px; }
+.logic-cols { display: flex; gap: 28px; justify-content: center; }
+@media (max-width: 760px) { .logic-cols { flex-direction: column; } }
+.logic-col { flex: 1; max-width: 440px; min-width: 0; }
+.logic-col-head { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; margin-bottom: 12px; justify-content: center; }
+.logic-node { position: relative; background: var(--card); border: 1.5px solid var(--rule); border-radius: 10px; padding: 11px 14px; cursor: pointer; transition: var(--transition); user-select: none; }
+.logic-node:hover { border-color: var(--accent-dk); background: var(--step-hover); }
+.logic-node.lg-system { border-left: 4px solid var(--purple); }
+.logic-node.lg-good { border-left: 4px solid var(--accent-dk); }
+.logic-node.lg-open { border-left: 4px solid var(--pri-critical); }
+.logic-node.lg-apps { border-left: 4px solid var(--pri-must); }
+.ln-name { font-size: 12.5px; font-weight: 700; line-height: 1.3; }
+.ln-sub { font-size: 11px; color: var(--ink-2); margin-top: 2px; }
+.ln-open-pill { display: inline-block; margin-top: 6px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; background: var(--pri-critical-lt); color: var(--pri-critical); }
+.ln-note { display: none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--rule); font-size: 11px; color: var(--ink-2); line-height: 1.55; }
+.logic-node.open .ln-note { display: block; }
+.logic-arrow { text-align: center; color: var(--arrow-color); padding: 3px 0; line-height: 1; }
+.logic-split { display: flex; gap: 8px; }
+.logic-split .logic-node { flex: 1; }
+.logic-merge { max-width: 560px; margin: 6px auto 0; }
+.logic-merge .logic-node { text-align: center; }
+.logic-hint { text-align: center; font-size: 10.5px; color: var(--ink-3); margin-top: 14px; }
+
 /* OVERVIEW (deep layer) */
 .overview { background: var(--overview-bg); color: var(--overview-ink); overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
 .overview.expanded { max-height: 900px; }
@@ -357,6 +384,106 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
   <div class="role-hints"><b>UX?</b> Walk steps 2–4 of each flow. · <b>Dev?</b> Open FR-001 &amp; FR-008 in any step panel. · <b>PM?</b> Hit "Deep dive" top right.</div>
 </div>
 
+<!-- FLOW LOGIC -->
+<div class="logic" id="logic">
+  <div class="logic-head">
+    <div class="logic-title">How it works — flow logic</div>
+    <div class="logic-sub">The decision layer behind both flows. Click any box for the detail.</div>
+  </div>
+  <div class="logic-cols">
+
+    <div class="logic-col">
+      <div class="logic-col-head"><span class="flow-chip v0">V0</span> Dashboard first</div>
+      <div class="logic-node" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Top-funnel questions</div>
+        <div class="ln-sub">name · type · goals · etc.</div>
+        <div class="ln-note">Collected in the dashboard funnel (chat / wizard / skip). Business name + type are critical for injection; description and goals help the AI reach better content.</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node" onclick="this.classList.toggle('open')">
+        <div class="ln-name">User chooses</div>
+        <div class="ln-sub">prompt / template</div>
+        <div class="ln-note">On the "Design your site with Aria" page — either generate from the seeded, editable prompt or pick a template from the AI-filtered gallery.</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node lg-system" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Business insights platform</div>
+        <div class="ln-sub">is the data complete?</div>
+        <div class="ln-note">Built and owned by the funnel team — we pull the funnel answers from it and check what's missing. <strong>V0 only:</strong> in V1.1 the questions happen inside the editor, so the answers are already in the session and there is no platform pull.</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-split">
+        <div class="logic-node lg-good" onclick="this.classList.toggle('open')">
+          <div class="ln-name">Complete</div>
+          <div class="ln-sub">seamless injection</div>
+          <div class="ln-note">All info present → content is injected into the site with no questions asked. Ever.</div>
+        </div>
+        <div class="logic-node lg-open" onclick="this.classList.toggle('open')">
+          <div class="ln-name">Data missing</div>
+          <div class="ln-sub">ask missing Qs → inject</div>
+          <div class="ln-open-pill">open decision</div>
+          <div class="ln-note">Only the missing questions are asked. <strong>How is an open experience decision:</strong> a modal over the editor (can show known details pre-filled — not the focus now) or an Aria composer question on editor entry. Same decision applies to the vanilla user who provided nothing.</div>
+        </div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Editor opens — creation mode</div>
+        <div class="ln-sub">all disabled until injection done</div>
+        <div class="ln-note">Everything is disabled and the Add panel is not exposed while injection runs. Funnel-data carry-over into this editor is not developed yet in V0.</div>
+      </div>
+    </div>
+
+    <div class="logic-col">
+      <div class="logic-col-head"><span class="flow-chip v11">V1.1</span> Editor first</div>
+      <div class="logic-node" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Editor opens — Aria composer</div>
+        <div class="ln-sub">questions inside the editor</div>
+        <div class="ln-note">Aria asks the intake questions (name → type) directly in the composer panel. Answer carry-over is already developed in V1.1.</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Templates shown</div>
+        <div class="ln-sub">user chooses one</div>
+        <div class="ln-note">Grid filtered by the user's answers ("Design with AI" is the alternative path — out of Template Injection scope).</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node lg-system" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Open another editor</div>
+        <div class="ln-sub">template editor — full reload</div>
+        <div class="ln-note">The editor the user was in is coupled to a blank site — it cannot render the chosen template. Picking a template must load the template editor (a different editor).</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node lg-good" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Content injection</div>
+        <div class="ln-sub">answers already in the session</div>
+        <div class="ln-note">The intake answers travel with the session into the template editor — injection runs on them directly, no platform pull needed.</div>
+      </div>
+      <div class="logic-arrow">↓</div>
+      <div class="logic-node lg-apps" onclick="this.classList.toggle('open')">
+        <div class="ln-name">Background app install</div>
+        <div class="ln-sub">if prompt needs app not in template</div>
+        <div class="ln-note">If the user's prompt implies functionality the template doesn't have (e.g. bookings), the app is installed for them silently in the background.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="logic-merge">
+    <div class="logic-arrow">↓</div>
+    <div class="logic-node lg-good" onclick="this.classList.toggle('open')">
+      <div class="ln-name">Personalized site ready</div>
+      <div class="ln-sub">same end state for both flows</div>
+      <div class="ln-note">Template personalized with the user's content; Aria shows "Your site is ready" + next steps.</div>
+    </div>
+    <div class="logic-arrow">↓</div>
+    <div class="logic-node lg-apps" onclick="this.classList.toggle('open')">
+      <div class="ln-name">Apps rules — both flows</div>
+      <div class="ln-sub">silent install · add from prompt · never remove</div>
+      <div class="ln-note">Apps bundled with the template are installed silently (lightweight, no confirmation). Apps implied by the prompt are added. Apps are never removed — no removal path exists in this flow.</div>
+    </div>
+  </div>
+  <div class="logic-hint">Click any box to expand its detail · scroll down for the screen-by-screen flows</div>
+</div>
+
 <!-- DEEP OVERVIEW -->
 <div class="overview" id="overview">
   <div class="overview-inner">
@@ -381,7 +508,8 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
         <div class="ov-term"><div class="ov-term-label">AI2Wix</div><div class="ov-term-def">LLM-powered content generation that produces personalized content from intake answers</div></div>
         <div class="ov-term"><div class="ov-term-label">Aria composer</div><div class="ov-term-def">Right-side panel in Harmony editor where Q cards appear</div></div>
         <div class="ov-term"><div class="ov-term-label">Handoff card</div><div class="ov-term-def">"Your site is ready" card shown after personalization</div></div>
-        <div class="ov-term"><div class="ov-term-label">Site Profile</div><div class="ov-term-def">Data object from Owner App chat: business_name, business_type, description</div></div>
+        <div class="ov-term"><div class="ov-term-label">Business insights platform</div><div class="ov-term-def">Funnel answers store, built by the funnel team. V0 pulls from it to check what's missing; V1.1 doesn't need it — answers live in the editor session</div></div>
+        <div class="ov-term"><div class="ov-term-label">Creation mode</div><div class="ov-term-def">V0 editor state during injection: everything disabled, Add panel hidden</div></div>
       </div>
     </div>
     <div>
@@ -483,7 +611,7 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
             <div class="edge-card"><div class="edge-card-title"><span class="edge-dot" style="background:var(--pri-blocker)"></span>Q1 + Q2 both skipped</div><div class="edge-card-desc">Vanilla prompt used. Template category still filters recommendations. No injection failure — graceful fallback to generic personalization.</div></div>
             <div class="edge-card"><div class="edge-card-title"><span class="edge-dot" style="background:var(--pri-critical)"></span>Q1 skipped only</div><div class="edge-card-desc">User answers Q2 but not Q1. Q2 title falls back to "What type of business is this?" — no name interpolation. Aria infers name from type for AI2Wix call.</div></div>
             <div class="edge-card"><div class="edge-card-title"><span class="edge-dot" style="background:var(--pri-critical)"></span>Q2 skipped only</div><div class="edge-card-desc">User provides name, skips type. AI2Wix receives name only. Category-level personalization used as fallback.</div></div>
-            <div class="edge-card"><div class="edge-card-title"><span class="edge-dot" style="background:var(--pri-must)"></span>Auto-inject — UC 1.2</div><div class="edge-card-desc">User came via Owner App chat. Site Profile already collected. No Q&amp;A shown — auto-inject fires immediately. Pending Shiri Gal / dev confirmation.</div></div>
+            <div class="edge-card"><div class="edge-card-title"><span class="edge-dot" style="background:var(--pri-must)"></span>Seamless inject — UC 1.2</div><div class="edge-card-desc">Business insights platform has all funnel answers (name + type). No Q&amp;A shown — content is injected seamlessly. V0 only.</div></div>
             <div class="edge-card"><div class="edge-card-title"><span class="edge-dot" style="background:var(--pri-critical)"></span>Injection failure</div><div class="edge-card-desc">AI2Wix returns error or empty. Editor opens with un-injected template. Aria: "I wasn't able to personalize this one — let's work on it together."</div></div>
             <div class="edge-card"><div class="edge-card-title"><span class="edge-dot" style="background:var(--pri-must)"></span>Template load failure</div><div class="edge-card-desc">Template fails to load on stage. Aria intake still opens and Q1 card appears — intake does not block on stage load. Stage shows skeleton.</div></div>
           </div>
@@ -596,17 +724,17 @@ const FR_DATA = {
   'FR-001': {
     id: 'FR-001', title: 'Aria opens with personalization intake when a template is selected — not with empty state',
     priority: 'Blocker', phase: 'Phase 1', intents: ['I-1','I-2a'],
-    desc: 'When the user clicks any template card, the editor opens with Aria automatically presenting an intake opening message followed by Q1. The template selection signal (template ID, category, metadata) is preserved. Two entry modes: (A) gallery pick — show Q1/Q2/Q3; (B) Site Profile present — auto-inject without intake cards.',
+    desc: 'When the user clicks any template card, the editor opens with Aria automatically presenting an intake opening message followed by Q1. The template selection signal (template ID, category, metadata) is preserved. Two entry modes: (A) gallery pick — ask what\'s missing; (B) funnel data complete (Business insights platform, V0) — seamless injection without intake.',
     useCases: [
       { name: 'UC 1.1 — Gallery pick', goal: 'Editor opens with Aria intake active — not empty state.', trigger: 'User clicks template card in gallery' },
-      { name: 'UC 1.2 — Chat-first / auto-inject', goal: 'Site Profile already collected → personalization fires automatically without Q&A.', trigger: 'Editor opens AND Site Profile present in session context' }
+      { name: 'UC 1.2 — Funnel data complete / seamless inject', goal: 'Business insights platform has name + type → personalization fires automatically without Q&A.', trigger: 'Editor opens AND funnel data complete (V0)' }
     ],
     edges: [
       { sev: 'crit', label: 'Template load fails', text: 'Aria intake still opens, Q1 card appears — intake does not block on stage load.' },
-      { sev: 'crit', label: 'Site Profile read fails (UC 1.2)', text: 'Fall back to gallery-pick flow (UC 1.1). Log as site_profile_read_failed.' },
+      { sev: 'crit', label: 'Business insights read fails (UC 1.2)', text: 'Fall back to asking the questions (UC 1.1). Log the read failure.' },
       { sev: 'imp', label: 'Editor takes >3s to open', text: 'Loading indicator shown; intake fires as soon as editor is ready.' }
     ],
-    codebase: 'Two distinct trigger conditions must be resolved at editor open time. Site Profile contract must be confirmed with Shiri Gal. Dynamic context injection is a hard platform dependency (documented gap, 14/06/2026).'
+    codebase: 'Two distinct trigger conditions must be resolved at editor open time. Business insights platform is owned by the funnel team — V0 pulls from it; V1.1 keeps answers in the editor session. Dynamic context injection is a hard platform dependency (documented gap, 14/06/2026).'
   },
   'FR-002': {
     id: 'FR-002', title: 'Business name capture — Q1 card with suggested options + free text',
@@ -745,7 +873,7 @@ const STEPS_V0 = [
   { id:'v0s5', num:'04', name:'"Design your site with Aria"', desc:'"Your prompt is ready." Prompt pre-seeded from whatever the chosen path collected. User can read, edit, append. Templates below.', frs:['FR-001','FR-004'], img:'v0s3b', imgCaption:'Template-seeded prompt — "Your prompt is ready." editable bakery prompt', branch:'2 variants ↓' },
   { id:'v0s6', num:'05', name:'Template Gallery', desc:'AI-filtered grid by category. "Or, start from a recommended template." Hover shows Edit / View.', frs:['FR-001','FR-005'], img:'v0s4', imgCaption:'Recommended template grid — bakery category, hover Edit / View' },
   { id:'v0s7', num:'06', name:'Generation Loader', desc:'Progress modal over blurred template. "Adding Wix Table Reservations — (2/13) Adding finishing touches…"', frs:['FR-007'], img:'v0s5', imgCaption:'Progress modal over frosted template — "(2/13)"' },
-  { id:'v0s8', num:'07', name:'Editor — Injected Result', desc:'Template personalized. Domain suggested ("realbabka.com is available!"). Aria: "Hi Netta, let\'s work together to build your site." + next steps.', frs:['FR-008','FR-009'], img:'v0s6', imgCaption:'Injected result — Babka bakery site, domain suggestion, Aria next steps' }
+  { id:'v0s8', num:'07', name:'Editor — Injected Result', desc:'Editor opened in creation mode (all disabled, Add panel hidden) while injecting. Template personalized. Domain suggested ("realbabka.com is available!"). Aria: "Hi Netta, let\'s work together to build your site." + next steps.', frs:['FR-008','FR-009'], img:'v0s6', imgCaption:'Injected result — Babka bakery site, domain suggestion, Aria next steps' }
 ];
 
 const STEPS_V11 = [
@@ -753,7 +881,7 @@ const STEPS_V11 = [
   { id:'v11s1', num:'02', name:'Editor — Site Intro + Q1', desc:'"What\'s your site called?" in Aria panel. Stage shows "Site Name" + generic prompt. Radio options + free text.', frs:['FR-001','FR-002','FR-005'], img:'v11s1', imgCaption:'Site introduction tab — Q1 card "What\'s your site called?"' },
   { id:'v11s2', num:'03', name:'Editor — Site Intro + Q2', desc:'Stage updates live: site name set to Q1 answer. Domain shown. AI writes site prompt (blue highlight). Q2 in Aria.', frs:['FR-003','FR-005'], img:'v11s2', imgCaption:'Stage updated live — "The Bistro" set, AI-written prompt highlighted' },
   { id:'v11s3', num:'04', name:'Design Method — AI vs Templates', desc:'"Design with AI" or "Explore recommended templates." Aria presents both paths. "How would you like to continue?"', frs:['FR-004','FR-006'], img:'v11s3', imgCaption:'Design method tab — "Design with AI" vs recommended templates', branch:'1 branch ↓' },
-  { id:'v11s4', num:'05', name:'Template Selection Grid', desc:'Category-filtered grid shown in stage/panel. User selects a template based on their answers.', frs:['FR-001'], img:'v11s3', imgCaption:'Recommended template row — restaurant category from Q2' },
+  { id:'v11s4', num:'05', name:'Template Selection Grid', desc:'Category-filtered grid shown in stage/panel. User selects a template — this opens ANOTHER editor (full reload): the previous editor is coupled to a blank site and cannot render the template.', frs:['FR-001'], img:'v11s3', imgCaption:'Recommended template row — restaurant category from Q2' },
   { id:'v11s5', num:'06', name:'Generation Loader', desc:'Progress modal over blurred editor: "Adding Wix Tips — (2/5)". Frost overlay variant used in the injection band.', frs:['FR-007'], img:'v11load', imgCaption:'Progress modal — "(2/5) Adding the finishing touches…"', branch:'2 variants ↓' },
   { id:'v11s6', num:'07', name:'Editor — Template + Injected', desc:'"The Bistro" in Lawrence template. Aria: "Welcome to your {name} site…" + Preview CTA + next-step actions.', frs:['FR-008','FR-009'], img:'v11s6', imgCaption:'Injected result — "The Bistro", Aria completion card + Preview CTA' }
 ];
