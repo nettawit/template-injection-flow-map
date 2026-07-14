@@ -407,9 +407,9 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
       <div class="exec-body">
         <div class="exec-kicker">The move</div>
         <h2 class="exec-h">Template Injection turns the template into <em>their</em> site — automatically, the instant they pick it.</h2>
-        <p class="exec-p">Aria asks up to two quick questions (business name, type) and personalizes the chosen template before the user touches anything.</p>
+        <p class="exec-p">From the generic template gallery to a personalized site — Aria fills the gap with the business's own name, copy, and apps.</p>
         <div class="exec-beforeafter">
-          <figure><img data-img="v11ws1" alt="Generic template" onclick="openLightbox('v11ws1')"><figcaption>Generic template</figcaption></figure>
+          <figure><img data-img="v0s4" alt="Generic templates page" onclick="openLightbox('v0s4')"><figcaption>The generic templates page — where it starts</figcaption></figure>
           <div class="exec-arrow"><svg width="34" height="18" viewBox="0 0 34 18" fill="none"><path d="M0 9h28M22 3l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <figure><img data-img="v11s6" alt="Personalized site" onclick="openLightbox('v11s6')"><figcaption>Their site, ready</figcaption></figure>
         </div>
@@ -419,21 +419,26 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
     <div class="exec-beat">
       <div class="exec-num">03</div>
       <div class="exec-body">
-        <div class="exec-kicker">Why it matters</div>
-        <h2 class="exec-h">It captures intent at the highest-value moment — and it ships across both funnels.</h2>
-        <p class="exec-p">Not a one-surface experiment: it works whether the user starts from the <strong>dashboard (V0)</strong> or inside the <strong>editor (V1.1)</strong>. Same personalized outcome, both entry points.</p>
+        <div class="exec-kicker">Flow 1 · Dashboard first (V0)</div>
+        <h2 class="exec-h">If we already have the data — the injection is seamless.</h2>
+        <p class="exec-p">The top funnel collects business name, type and goals before the editor. We check what we have:</p>
+        <div class="exec-logic">
+          <div class="exec-logic-card good"><b>Data complete</b><span>Content injects silently into the chosen template — the user is never asked anything</span></div>
+          <div class="exec-logic-card open"><b>Data missing</b><span>We complete it first — <b style="font-size:12px">how</b> is an open experience decision: a modal, or a chat/composer question inside the editor</span></div>
+        </div>
       </div>
     </div>
 
     <div class="exec-beat">
       <div class="exec-num">04</div>
       <div class="exec-body">
-        <div class="exec-kicker">How it decides</div>
-        <h2 class="exec-h">Simple logic: if we already know the business, inject silently; if not, ask a little.</h2>
-        <div class="exec-logic">
-          <div class="exec-logic-card good"><b>Data complete</b><span>Seamless injection — no questions</span></div>
-          <div class="exec-logic-card open"><b>Data missing</b><span>Ask only what's missing, then inject</span></div>
-          <div class="exec-logic-card apps"><b>Apps</b><span>Installed silently — added from the prompt, never removed</span></div>
+        <div class="exec-kicker">Flow 2 · Creation first (V1.1)</div>
+        <h2 class="exec-h">We ask the questions up front — then the template pick triggers apps + injection.</h2>
+        <p class="exec-p">Aria asks the user directly inside the editor. When they choose a template, they can <strong>install the extra apps they need</strong> on top of the ones bundled with the template — and the content injects.</p>
+        <div class="exec-beforeafter">
+          <figure><img data-img="v11ws1" alt="Aria asks the questions in the editor" onclick="openLightbox('v11ws1')"><figcaption>Aria asks in the editor</figcaption></figure>
+          <div class="exec-arrow"><svg width="34" height="18" viewBox="0 0 34 18" fill="none"><path d="M0 9h28M22 3l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <figure><img data-img="v11apps" alt="Apps install on template pick" onclick="openLightbox('v11apps')"><figcaption>Template pick → add the apps they need</figcaption></figure>
         </div>
       </div>
     </div>
@@ -441,12 +446,12 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
     <div class="exec-beat">
       <div class="exec-num">05</div>
       <div class="exec-body">
-        <div class="exec-kicker">What we need — the ask</div>
-        <h2 class="exec-h">Understanding and a green light to move into development.</h2>
-        <p class="exec-p">Two things unlock the build:</p>
+        <div class="exec-kicker">Good to know</div>
+        <h2 class="exec-h">Both flows end at the same place — and two items are still open.</h2>
         <ul class="exec-ask">
-          <li><strong>Approve the direction</strong> so we can start dev on the V0 + V1.1 flows.</li>
-          <li><strong>Help close one platform dependency</strong> — dynamic context injection in Aria doesn't exist yet and is required for the intake. A decision here unblocks the whole feature.</li>
+          <li><strong>Same end state:</strong> a personalized site with Aria's "Your site is ready" handoff — whichever entry point the user came from.</li>
+          <li><strong>Open experience decision:</strong> how we complete missing data in V0 — modal vs. chat inside the editor.</li>
+          <li><strong>Platform dependency:</strong> dynamic context injection in Aria doesn't exist yet — required before the intake can be built.</li>
         </ul>
         <a class="exec-cta" href="#flows" onclick="document.getElementById('flows').scrollIntoView({behavior:'smooth'});return false;">See the full flows &amp; screens ↓</a>
       </div>
