@@ -91,6 +91,37 @@ body { background: var(--bg); color: var(--ink); font-family: -apple-system, Bli
 .btn-play { background: var(--accent); color: #1A2600; border-color: var(--accent); }
 .btn-play:hover { background: var(--accent); filter: brightness(1.05); color: #1A2600; }
 
+/* EXECUTIVE SUMMARY */
+.exec { max-width: 960px; margin: 0 auto; padding: 48px 24px 24px; }
+.exec-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-dk); text-align: center; margin-bottom: 32px; }
+.exec-beats { display: flex; flex-direction: column; gap: 40px; }
+.exec-beat { display: flex; gap: 24px; align-items: flex-start; }
+.exec-num { font-size: 34px; font-weight: 800; line-height: 1; color: var(--rule); letter-spacing: -0.02em; min-width: 58px; }
+.exec-body { flex: 1; min-width: 0; }
+.exec-kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+.exec-h { font-size: clamp(20px, 2.6vw, 28px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; text-wrap: balance; margin-bottom: 10px; }
+.exec-h em { font-style: normal; color: var(--accent-dk); }
+.exec-p { font-size: 15px; color: var(--ink-2); line-height: 1.6; max-width: 640px; }
+.exec-p strong { color: var(--ink); }
+.exec-beforeafter { display: flex; align-items: center; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
+.exec-beforeafter figure { margin: 0; flex: 1; min-width: 200px; }
+.exec-beforeafter img { width: 100%; border-radius: 8px; border: 1px solid var(--rule); box-shadow: 0 4px 16px rgba(0,0,0,0.07); display: block; cursor: zoom-in; }
+.exec-beforeafter figcaption { font-size: 11px; font-weight: 600; color: var(--ink-2); margin-top: 6px; }
+.exec-arrow { color: var(--arrow-color); flex-shrink: 0; }
+.exec-logic { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.exec-logic-card { flex: 1; min-width: 190px; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; border-left-width: 4px; }
+.exec-logic-card b { display: block; font-size: 13px; margin-bottom: 3px; }
+.exec-logic-card span { font-size: 12px; color: var(--ink-2); line-height: 1.45; }
+.exec-logic-card.good { border-left-color: var(--accent-dk); }
+.exec-logic-card.open { border-left-color: var(--pri-critical); }
+.exec-logic-card.apps { border-left-color: var(--pri-must); }
+.exec-ask { margin: 10px 0 18px; padding-left: 20px; }
+.exec-ask li { font-size: 15px; color: var(--ink-2); line-height: 1.6; margin-bottom: 8px; }
+.exec-ask strong { color: var(--ink); }
+.exec-cta { display: inline-block; background: var(--ink); color: var(--bg); font-size: 13px; font-weight: 700; padding: 10px 22px; border-radius: 24px; text-decoration: none; transition: var(--transition); }
+.exec-cta:hover { transform: translateY(-1px); }
+@media (max-width: 600px) { .exec-beat { gap: 14px; } .exec-num { font-size: 24px; min-width: 40px; } }
+
 /* HERO */
 .hero { padding: 44px 24px 36px; text-align: center; max-width: 880px; margin: 0 auto; }
 .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dk); margin-bottom: 12px; }
@@ -349,12 +380,80 @@ details.acc[open] summary .acc-caret { transform: rotate(180deg); }
     <div class="product-name">Template Injection <span>Flow Map</span></div>
   </div>
   <div class="topbar-right">
+    <a class="btn" href="#exec" onclick="document.getElementById('exec').scrollIntoView({behavior:'smooth'});return false;">Exec summary</a>
     <button class="btn btn-play" onclick="openPlay()">▶ Play walkthrough</button>
     <a class="btn" href="https://www.figma.com/design/JojXJSlNU01Ji3HQGD7kDe/Harmony-Funnel-Template-Injection?node-id=17340-11245" target="_blank" rel="noopener">Open Figma map ↗</a>
     <a class="btn" href="#open-questions" onclick="document.getElementById('open-questions').scrollIntoView({behavior:'smooth'});return false;">⚠ Open questions</a>
     <button class="btn" id="toggleOverview">Deep dive ↓</button>
   </div>
 </div>
+
+<!-- EXECUTIVE SUMMARY -->
+<section class="exec" id="exec">
+  <div class="exec-eyebrow">Executive summary · Wix Harmony · Aria</div>
+  <div class="exec-beats">
+
+    <div class="exec-beat">
+      <div class="exec-num">01</div>
+      <div class="exec-body">
+        <div class="exec-kicker">The gap</div>
+        <h2 class="exec-h">A self-creator picks a template — full of intent — and lands in an empty editor.</h2>
+        <p class="exec-p">We drop that signal at the exact moment the user is most motivated. No personalization, no context, no momentum. They start from a blank, generic page.</p>
+      </div>
+    </div>
+
+    <div class="exec-beat">
+      <div class="exec-num">02</div>
+      <div class="exec-body">
+        <div class="exec-kicker">The move</div>
+        <h2 class="exec-h">Template Injection turns the template into <em>their</em> site — automatically, the instant they pick it.</h2>
+        <p class="exec-p">Aria asks up to two quick questions (business name, type) and personalizes the chosen template before the user touches anything.</p>
+        <div class="exec-beforeafter">
+          <figure><img data-img="v11ws1" alt="Generic template" onclick="openLightbox('v11ws1')"><figcaption>Generic template</figcaption></figure>
+          <div class="exec-arrow"><svg width="34" height="18" viewBox="0 0 34 18" fill="none"><path d="M0 9h28M22 3l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <figure><img data-img="v11s6" alt="Personalized site" onclick="openLightbox('v11s6')"><figcaption>Their site, ready</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="exec-beat">
+      <div class="exec-num">03</div>
+      <div class="exec-body">
+        <div class="exec-kicker">Why it matters</div>
+        <h2 class="exec-h">It captures intent at the highest-value moment — and it ships across both funnels.</h2>
+        <p class="exec-p">Not a one-surface experiment: it works whether the user starts from the <strong>dashboard (V0)</strong> or inside the <strong>editor (V1.1)</strong>. Same personalized outcome, both entry points.</p>
+      </div>
+    </div>
+
+    <div class="exec-beat">
+      <div class="exec-num">04</div>
+      <div class="exec-body">
+        <div class="exec-kicker">How it decides</div>
+        <h2 class="exec-h">Simple logic: if we already know the business, inject silently; if not, ask a little.</h2>
+        <div class="exec-logic">
+          <div class="exec-logic-card good"><b>Data complete</b><span>Seamless injection — no questions</span></div>
+          <div class="exec-logic-card open"><b>Data missing</b><span>Ask only what's missing, then inject</span></div>
+          <div class="exec-logic-card apps"><b>Apps</b><span>Installed silently — added from the prompt, never removed</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exec-beat">
+      <div class="exec-num">05</div>
+      <div class="exec-body">
+        <div class="exec-kicker">What we need — the ask</div>
+        <h2 class="exec-h">Understanding and a green light to move into development.</h2>
+        <p class="exec-p">Two things unlock the build:</p>
+        <ul class="exec-ask">
+          <li><strong>Approve the direction</strong> so we can start dev on the V0 + V1.1 flows.</li>
+          <li><strong>Help close one platform dependency</strong> — dynamic context injection in Aria doesn't exist yet and is required for the intake. A decision here unblocks the whole feature.</li>
+        </ul>
+        <a class="exec-cta" href="#flows" onclick="document.getElementById('flows').scrollIntoView({behavior:'smooth'});return false;">See the full flows &amp; screens ↓</a>
+      </div>
+    </div>
+
+  </div>
+</section>
 
 <!-- HERO -->
 <div class="hero">
