@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Template Injection — Product Gaps</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0f0f5;
+    --text-muted: #8888a0;
+    --accent: #6c63ff;
+    --accent-light: #9d97ff;
+    --green: #3ecf8e;
+    --red: #f85149;
+    --yellow: #f0c040;
+    --blue: #58a6ff;
+    --slide-max: 1200px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+  }
+  .nav-brand { font-size: 13px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.02em; }
+  .nav-brand span { color: var(--text); }
+  .nav-brand a { color: var(--text-muted); text-decoration: none; font-size: 12px; margin-right: 12px; }
+  .nav-brand a:hover { color: var(--accent-light); }
+  .nav-controls { display: flex; align-items: center; gap: 12px; }
+  .nav-progress { font-size: 12px; color: var(--text-muted); min-width: 60px; text-align: right; }
+  .nav-btn {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface2); color: var(--text); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .nav-btn:hover { background: rgba(108,99,255,0.2); border-color: var(--accent); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+  /* ── SLIDES ── */
+  .slides-wrap { padding-top: 52px; height: 100vh; overflow: hidden; }
+  .slides { height: calc(100vh - 52px); overflow: hidden; position: relative; }
+  .slide {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 48px 40px; opacity: 0; transform: translateY(24px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none; overflow-y: auto;
+  }
+  .slide.active { opacity: 1; transform: translateY(0); pointer-events: all; }
+  .slide-inner { width: 100%; max-width: var(--slide-max); }
+
+  /* ── TYPE ── */
+  .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 16px; }
+  .slide-title { font-size: clamp(26px, 3.2vw, 44px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 14px; }
+  .slide-sub { font-size: clamp(14px, 1.4vw, 17px); color: var(--text-muted); max-width: 640px; margin-bottom: 28px; line-height: 1.65; }
+  .cover { text-align: center; }
+  .cover .slide-title { font-size: clamp(36px, 5vw, 64px); }
+  .cover .slide-sub { margin-left: auto; margin-right: auto; }
+  .cover-meta { display: flex; gap: 16px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+  .cover-chip { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); font-size: 12px; color: var(--text-muted); }
+
+  /* ── TAG ── */
+  .tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; margin-bottom: 12px; }
+  .tag.gap { background: rgba(248,81,73,0.15); color: var(--red); }
+  .tag.good { background: rgba(62,207,142,0.15); color: var(--green); }
+  .tag.finding { background: rgba(108,99,255,0.15); color: var(--accent-light); }
+
+  /* ── CARDS ── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 8px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+  .card-icon { font-size: 22px; margin-bottom: 10px; }
+  .card-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+  .card-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .card.green { border-color: rgba(62,207,142,0.25); }
+  .card.red { border-color: rgba(248,81,73,0.25); }
+  .card.yellow { border-color: rgba(240,192,64,0.25); }
+
+  /* ── COMPARE ── */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+  .compare-col { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .compare-label {
+    padding: 9px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 7px;
+  }
+  .compare-label.before { color: var(--text-muted); }
+  .compare-label.after-good { color: var(--green); }
+  .compare-label.after-bad { color: var(--red); }
+  .compare-label.neutral { color: var(--yellow); }
+  .compare-body { padding: 14px; }
+  .compare-img {
+    width: 100%; border-radius: 8px; background: var(--surface2);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--text-muted); font-size: 13px; gap: 8px; overflow: hidden;
+    min-height: 160px;
+  }
+  .compare-img img { width: 100%; height: auto; border-radius: 8px; display: block; }
+  .compare-caption { font-size: 12px; color: var(--text-muted); margin-top: 9px; line-height: 1.55; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot.green { background: var(--green); }
+  .dot.red { background: var(--red); }
+  .dot.yellow { background: var(--yellow); }
+
+  /* ── BULLETS ── */
+  .bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+  .bullets li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.55; }
+  .bullets li .dot { margin-top: 7px; }
+
+  /* ── TABLE ── */
+  .gap-table { width: 100%; border-collapse: collapse; margin-top: 22px; font-size: 14px; }
+  .gap-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  .gap-table td { padding: 13px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; line-height: 1.55; }
+  .gap-table tr:last-child td { border-bottom: none; }
+  .impact { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .impact.high { background: rgba(248,81,73,0.15); color: var(--red); }
+  .impact.med { background: rgba(240,192,64,0.15); color: var(--yellow); }
+
+  /* ── NEXT STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+  .step-row { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+  .step-num { font-size: 11px; font-weight: 700; color: var(--accent-light); background: rgba(108,99,255,0.15); width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-content { flex: 1; }
+  .step-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .step-body { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+
+  /* ── FIGMA EMBED ── */
+  .figma-embed { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--surface2); margin-top: 16px; }
+  .figma-embed iframe { width: 100%; height: 380px; border: none; display: block; }
+  .figma-link { display: flex; align-items: center; gap: 8px; padding: 10px 14px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); text-decoration: none; }
+  .figma-link:hover { color: var(--accent-light); }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box { margin-top: 18px; background: rgba(108,99,255,0.08); border: 1px solid rgba(108,99,255,0.2); border-radius: 10px; padding: 14px 18px; }
+  .highlight-box-label { font-size: 13px; color: var(--accent-light); font-weight: 600; margin-bottom: 4px; }
+  .highlight-box-body { font-size: 14px; color: var(--text); line-height: 1.6; }
+
+  /* ── DOTS NAV ── */
+  .dots-nav { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 100; }
+  .dot-btn { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; padding: 0; }
+  .dot-btn.active { background: var(--accent-light); transform: scale(1.4); }
+
+  /* ── ANNOTATIONS ── */
+  .annotation {
+    position: relative;
+    display: inline-block;
+  }
+  .annotation-arrow {
+    position: absolute;
+    background: var(--red);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    z-index: 10;
+  }
+
+  @media (max-width: 768px) {
+    .compare { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: 1fr; }
+    .nav { padding: 0 20px; }
+    .slide { padding: 28px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-brand">
+    <a href="index.html">← Flow Map</a>
+    Harmony · <span>Template Injection Gaps</span>
+  </div>
+  <div class="nav-controls">
+    <div class="nav-progress" id="navProgress">1 / 9</div>
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>←</button>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">→</button>
+  </div>
+</div>
+
+<div class="slides-wrap">
+<div class="slides" id="slides">
+
+  <!-- SLIDE 1: COVER -->
+  <div class="slide active" id="slide-1">
+    <div class="slide-inner cover">
+      <div class="eyebrow">Harmony · Template Injection</div>
+      <h1 class="slide-title">Product Gaps &amp; Research Findings</h1>
+      <p class="slide-sub">A summary of what's working, what's not, and where we need to focus next.</p>
+      <div class="cover-meta">
+        <div class="cover-chip">Wix Research</div>
+        <div class="cover-chip">July 2026</div>
+        <div class="cover-chip">Internal</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: WHAT WE TESTED -->
+  <div class="slide" id="slide-2">
+    <div class="slide-inner">
+      <div class="eyebrow">Context</div>
+      <h2 class="slide-title">What we tested</h2>
+      <p class="slide-sub">We mapped Before / After results from template injection across a range of business types and scenarios.</p>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">🗂️</div>
+          <div class="card-title">Use case</div>
+          <div class="card-body">User selects a template, Aria collects business info, then injects personalized content into the template.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔬</div>
+          <div class="card-title">What we looked at</div>
+          <div class="card-body">Text content, images, layout stability, brand alignment, and results across different business types.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📐</div>
+          <div class="card-title">Scenarios tested</div>
+          <div class="card-body">Same business type with minor detail changes. Different business type, same template. With and without brand &amp; style instructions.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: WHAT WORKS -->
+  <div class="slide" id="slide-3">
+    <div class="slide-inner">
+      <div class="eyebrow">Findings — What works</div>
+      <h2 class="slide-title">The good news</h2>
+      <div class="compare" style="margin-top:8px;">
+        <div class="compare-col" style="grid-column: 1 / -1;">
+          <div class="compare-label neutral"><div class="dot yellow"></div> Before injection — original template</div>
+          <div class="compare-body">
+            <div class="compare-img">
+              <img src="assets/before-row1.png" alt="Original marketing template in Wix Editor" />
+            </div>
+            <div class="compare-caption">The original EPS Marketing template — clean layout, template-native copy, consistent visual style.</div>
+          </div>
+        </div>
+      </div>
+      <ul class="bullets" style="margin-top:16px;">
+        <li><div class="dot green"></div><span><strong>Text content quality is good.</strong> Aria generates relevant, on-brand copy that fits the business type.</span></li>
+        <li><div class="dot green"></div><span><strong>Images come from the same visual family.</strong> The injected images are thematically consistent — they don't feel random.</span></li>
+        <li><div class="dot green"></div><span><strong>Small changes work well.</strong> When only details change (name, tagline, city), the result is accurate and polished.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: GAP 1 — TEXT BREAKS LAYOUT -->
+  <div class="slide" id="slide-4">
+    <div class="slide-inner">
+      <div class="tag gap">Gap 1</div>
+      <h2 class="slide-title">Text content breaks the layout</h2>
+      <p class="slide-sub">Aria generates text that's semantically correct, but doesn't account for character limits or layout constraints.</p>
+      <div class="compare">
+        <div class="compare-col">
+          <div class="compare-label before"><div class="dot yellow"></div> Original template</div>
+          <div class="compare-body">
+            <div class="compare-img">
+              <img src="assets/before-row1.png" alt="Original template with clean layout" />
+            </div>
+            <div class="compare-caption">Layout holds with short, template-native copy. Text fits within designed containers. Hero headline is concise.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-label after-bad"><div class="dot red"></div> After injection</div>
+          <div class="compare-body">
+            <div class="compare-img">
+              <img src="assets/after-img11.png" alt="After injection — nav updated but hero text unchanged" />
+            </div>
+            <div class="compare-caption">Business name injected into the nav ("EPS MARKETING") but the hero headline "Your Brand's Key to Better Marketing" wasn't updated — showing partial, inconsistent injection.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: GAP 2 — IMAGES NOT IN APPS -->
+  <div class="slide" id="slide-5">
+    <div class="slide-inner">
+      <div class="tag gap">Gap 2</div>
+      <h2 class="slide-title">Images aren't injected into apps</h2>
+      <p class="slide-sub">Image replacement works on standard page sections, but Wix app widgets (galleries, stores, bookings) are not updated during injection.</p>
+      <div class="compare">
+        <div class="compare-col">
+          <div class="compare-label before"><div class="dot yellow"></div> Tech template — Before injection</div>
+          <div class="compare-body">
+            <div class="compare-img">
+              <img src="assets/before-img8.png" alt="SaaS template in Wix Editor" />
+            </div>
+            <div class="compare-caption">MicroLink SaaS template with OtherSync dashboard — standard Wix sections and app widgets visible. Aria is connected and ready to personalize.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-label after-bad"><div class="dot red"></div> After injection — apps untouched</div>
+          <div class="compare-body">
+            <div class="compare-img" style="min-height:200px; background: var(--surface2);">
+              <span style="font-size: 36px; opacity: 0.3">🖼️</span>
+              <span style="text-align:center; padding: 0 20px;">Gallery, Stores, and Bookings app widgets keep their original placeholder images — even after full injection.</span>
+            </div>
+            <div class="compare-caption">Standard sections get new images. App widget images are not part of the injection scope — they remain unchanged and break the personalized experience.</div>
+          </div>
+        </div>
+      </div>
+      <div class="highlight-box">
+        <div class="highlight-box-label">Why this matters</div>
+        <div class="highlight-box-body">App widgets (Gallery, Stores, Bookings) are often the most prominent visual areas on the page. When they keep generic images, the site feels half-personalized.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: GAP 3 — BIGGER PIVOTS -->
+  <div class="slide" id="slide-6">
+    <div class="slide-inner">
+      <div class="tag gap">Gap 3</div>
+      <h2 class="slide-title">Bigger pivots break the result</h2>
+      <p class="slide-sub">When the user's business type differs significantly from the template's original intent, injection results degrade — copy doesn't fit the context and structure becomes awkward.</p>
+      <div class="compare">
+        <div class="compare-col">
+          <div class="compare-label after-good"><div class="dot green"></div> Similar business type — works well</div>
+          <div class="compare-body">
+            <div class="compare-img" style="min-height:180px; background: var(--surface2);">
+              <span style="font-size: 36px; opacity: 0.35">☕ → 🥐</span>
+              <div style="text-align:center; padding: 0 20px; margin-top:8px;">
+                <div style="font-weight:600; margin-bottom:4px;">Coffee shop → Bakery</div>
+                <div style="font-size:12px; color: var(--green);">Small pivot: same lifestyle, similar audience, close visual expectations</div>
+              </div>
+            </div>
+            <div class="compare-caption">When the business type is adjacent to the template's original purpose, the injection adapts well. Sections, images, and tone remain coherent.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-label after-bad"><div class="dot red"></div> Different business type — breaks</div>
+          <div class="compare-body">
+            <div class="compare-img" style="min-height:180px; background: var(--surface2);">
+              <span style="font-size: 36px; opacity: 0.35">☕ → 🏋️</span>
+              <div style="text-align:center; padding: 0 20px; margin-top:8px;">
+                <div style="font-weight:600; margin-bottom:4px;">Coffee shop template → Gym</div>
+                <div style="font-size:12px; color: var(--red);">Big pivot: forced copy, jarring images, structure no longer fits</div>
+              </div>
+            </div>
+            <div class="compare-caption">Bigger pivots produce a jarring result — the template structure no longer fits the business, and injected content feels forced into the wrong container.</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <a class="figma-link" style="background: var(--surface); border: 1px solid var(--border); border-radius:10px; display:flex; padding:12px 16px;" href="https://www.figma.com/design/JojXJSlNU01Ji3HQGD7kDe/Harmony-Funnel-Template-Injection?node-id=19101-15040" target="_blank" rel="noopener">
+          ↗ View full Before / After mapping in Figma
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: FINDING — BRAND & STYLE -->
+  <div class="slide" id="slide-7">
+    <div class="slide-inner">
+      <div class="tag finding">Key Finding</div>
+      <h2 class="slide-title">Brand &amp; style instructions improve results</h2>
+      <p class="slide-sub">When Aria includes an explicit instruction to maintain the template's original visual brand and style, the output is noticeably more aligned — especially for text tone and image selection.</p>
+      <div class="compare">
+        <div class="compare-col">
+          <div class="compare-label before"><div class="dot yellow"></div> Without brand/style instruction</div>
+          <div class="compare-body">
+            <div class="compare-img">
+              <img src="assets/after-img11.png" alt="Injection without brand instruction — partial result" />
+            </div>
+            <div class="compare-caption">Aria injects content without anchoring to the template's visual identity. Business name appears in the nav, but the hero and other sections aren't updated to reflect the brand.</div>
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-label after-good"><div class="dot green"></div> With brand/style instruction</div>
+          <div class="compare-body">
+            <div class="compare-img">
+              <img src="assets/before-row1.png" alt="Template with consistent visual identity" />
+            </div>
+            <div class="compare-caption">When Aria is instructed to preserve the template's visual brand, the injected content feels like a natural extension of the original design. Style remains consistent throughout.</div>
+          </div>
+        </div>
+      </div>
+      <div class="highlight-box">
+        <div class="highlight-box-label">Recommendation</div>
+        <div class="highlight-box-body">Make brand &amp; style preservation a default system instruction in every injection prompt — not an optional addition. This is low-effort, high-impact.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: GAP SUMMARY TABLE -->
+  <div class="slide" id="slide-8">
+    <div class="slide-inner">
+      <div class="eyebrow">Summary</div>
+      <h2 class="slide-title">Gap map</h2>
+      <table class="gap-table">
+        <thead>
+          <tr>
+            <th>Gap</th>
+            <th>What breaks</th>
+            <th>Impact</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Text breaks layout</strong></td>
+            <td>Injected copy overflows containers; partial injection leaves hero unchanged while nav is updated</td>
+            <td><span class="impact high">High</span></td>
+            <td>Open</td>
+          </tr>
+          <tr>
+            <td><strong>Images not in apps</strong></td>
+            <td>Gallery, Stores, Bookings widgets keep original placeholder images</td>
+            <td><span class="impact high">High</span></td>
+            <td>Open</td>
+          </tr>
+          <tr>
+            <td><strong>Bigger pivots break</strong></td>
+            <td>Templates with a different business type than the user's don't adapt well</td>
+            <td><span class="impact med">Medium</span></td>
+            <td>Open</td>
+          </tr>
+          <tr>
+            <td><strong>Brand/style not anchored</strong></td>
+            <td>Without brand instruction, injection feels disconnected from template identity</td>
+            <td><span class="impact med">Medium</span></td>
+            <td>Fixable in prompt</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:18px; padding:13px 17px; background: var(--surface); border: 1px solid var(--border); border-radius:10px; font-size:13px; color: var(--text-muted);">
+        ✅ <strong style="color: var(--text);">What works:</strong> Text quality, image family consistency, small pivots, brand-instructed injection results
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: NEXT STEPS -->
+  <div class="slide" id="slide-9">
+    <div class="slide-inner">
+      <div class="eyebrow">What's next</div>
+      <h2 class="slide-title">Next steps</h2>
+      <div class="steps">
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Add character-limit awareness to injection</div>
+            <div class="step-body">Pass container max-char limits as part of the injection context so Aria generates text that respects layout constraints.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Extend image injection to Wix app widgets</div>
+            <div class="step-body">Gallery, Stores, and Bookings widgets need a separate injection path. Coordinate with app teams to expose image update APIs during personalization.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Make brand &amp; style preservation a default</div>
+            <div class="step-body">Include a brand/style instruction in every injection prompt by default. Already proven to improve output quality — low effort, high impact.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Research template–business type matching</div>
+            <div class="step-body">Filter or rank templates by business type similarity to reduce the frequency of large pivots before injection even begins.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="dots-nav" id="dotsNav"></div>
+
+<script>
+  const TOTAL = 9;
+  let current = 1;
+  const dotsNav = document.getElementById('dotsNav');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const navProgress = document.getElementById('navProgress');
+
+  for (let i = 1; i <= TOTAL; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'dot-btn' + (i === 1 ? ' active' : '');
+    btn.onclick = () => goTo(i);
+    btn.title = `Slide ${i}`;
+    dotsNav.appendChild(btn);
+  }
+
+  function goTo(n) {
+    document.getElementById(`slide-${current}`).classList.remove('active');
+    dotsNav.children[current - 1].classList.remove('active');
+    current = Math.max(1, Math.min(TOTAL, n));
+    document.getElementById(`slide-${current}`).classList.add('active');
+    dotsNav.children[current - 1].classList.add('active');
+    prevBtn.disabled = current === 1;
+    nextBtn.disabled = current === TOTAL;
+    navProgress.textContent = `${current} / ${TOTAL}`;
+  }
+
+  function changeSlide(dir) { goTo(current + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+  });
+</script>
+</body>
+</html>
