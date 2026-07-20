@@ -138,6 +138,31 @@
   }
   .col-img:hover { outline-color: var(--accent); }
   .col-img img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 8px; }
+  /* hover image layered on top */
+  .col-img img.img-main   { position: absolute; inset: 0; transition: opacity 0.25s; z-index: 1; border-radius: 8px; }
+  .col-img img.img-hover-layer { position: absolute; inset: 0; opacity: 0; transition: opacity 0.25s; z-index: 2; border-radius: 8px; }
+  .col-img:hover img.img-main   { opacity: 0; }
+  .col-img:hover img.img-hover-layer { opacity: 1; }
+  /* add-hover button */
+  .add-hover-btn {
+    position: absolute; bottom: 6px; right: 6px; z-index: 10;
+    width: 24px; height: 24px; border-radius: 6px;
+    background: rgba(108,99,255,0.85); border: none; color: #fff;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    display: none; align-items: center; justify-content: center;
+    line-height: 1; transition: background 0.15s;
+  }
+  .add-hover-btn:hover { background: var(--accent); }
+  .col-img:hover .add-hover-btn { display: flex; }
+  /* hover badge */
+  .hover-badge {
+    position: absolute; top: 6px; right: 6px; z-index: 10;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.05em;
+    background: rgba(108,99,255,0.85); color: #fff;
+    padding: 2px 7px; border-radius: 5px; pointer-events: none;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .col-img:hover .hover-badge { opacity: 1; }
   .col-img .img-placeholder {
     display: flex; flex-direction: column; align-items: center; gap: 8px;
     color: var(--text-muted); font-size: 12px; text-align: center; padding: 16px;
@@ -587,9 +612,21 @@
   // ── IMAGE PICKER ──
   const fileInput = document.getElementById('fileInput');
   let targetSlot = null;
+  let targetLayer = 'main'; // 'main' or 'hover'
 
   function pickImage(slotEl) {
+    // only fires if slot already has a main image or is empty → sets main image
+    if (event && event.target && event.target.classList.contains('add-hover-btn')) return;
     targetSlot = slotEl;
+    targetLayer = 'main';
+    fileInput.value = '';
+    fileInput.click();
+  }
+
+  function pickHoverImage(slotEl, e) {
+    e.stopPropagation();
+    targetSlot = slotEl;
+    targetLayer = 'hover';
     fileInput.value = '';
     fileInput.click();
   }
@@ -598,10 +635,53 @@
     if (!fileInput.files[0] || !targetSlot) return;
     const reader = new FileReader();
     reader.onload = ev => {
-      targetSlot.innerHTML = '<img src="' + ev.target.result + '" alt="">';
+      const src = ev.target.result;
+      if (targetLayer === 'main') {
+        // Set main image; preserve existing hover image if any
+        const existingHover = targetSlot.querySelector('img.img-hover-layer');
+        const hoverSrc = existingHover ? existingHover.src : null;
+        targetSlot.innerHTML = '';
+        const main = document.createElement('img');
+        main.className = 'img-main'; main.src = src; main.alt = '';
+        targetSlot.appendChild(main);
+        if (hoverSrc) {
+          const hov = document.createElement('img');
+          hov.className = 'img-hover-layer'; hov.src = hoverSrc; hov.alt = '';
+          targetSlot.appendChild(hov);
+          const badge = document.createElement('div');
+          badge.className = 'hover-badge'; badge.textContent = 'hover';
+          targetSlot.appendChild(badge);
+        }
+        addHoverBtn(targetSlot);
+      } else {
+        // Add/replace hover layer
+        let hov = targetSlot.querySelector('img.img-hover-layer');
+        if (!hov) {
+          hov = document.createElement('img');
+          hov.className = 'img-hover-layer'; hov.alt = '';
+          targetSlot.appendChild(hov);
+          const badge = document.createElement('div');
+          badge.className = 'hover-badge'; badge.textContent = 'hover';
+          targetSlot.appendChild(badge);
+        }
+        hov.src = src;
+        // Make sure main img has img-main class
+        const main = targetSlot.querySelector('img:not(.img-hover-layer)');
+        if (main) main.className = 'img-main';
+      }
     };
     reader.readAsDataURL(fileInput.files[0]);
   });
+
+  function addHoverBtn(slotEl) {
+    if (slotEl.querySelector('.add-hover-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'add-hover-btn';
+    btn.title = 'Add hover image';
+    btn.innerHTML = '+';
+    btn.addEventListener('click', e => pickHoverImage(slotEl, e));
+    slotEl.appendChild(btn);
+  }
 
   // ── EDIT HINT ──
   const editHint = document.getElementById('editHint');
