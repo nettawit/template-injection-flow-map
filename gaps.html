@@ -540,47 +540,35 @@
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
   });
 
-  // ── PASTE-TO-REPLACE ──
-  let selectedImg = null;
+  // ── CLICK TO REPLACE IMAGE ──
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*';
+  fileInput.style.display = 'none';
+  document.body.appendChild(fileInput);
 
-  function selectImg(img) {
-    if (selectedImg) selectedImg.classList.remove('img-selected');
-    selectedImg = img;
-    img.classList.add('img-selected');
-    img.scrollIntoView({ block: 'nearest' });
-  }
-
-  function clearSelection() {
-    if (selectedImg) selectedImg.classList.remove('img-selected');
-    selectedImg = null;
-  }
+  let targetImg = null;
 
   document.querySelectorAll('.compare-img img').forEach(img => {
     img.addEventListener('click', e => {
       e.stopPropagation();
-      selectImg(img);
+      targetImg = img;
+      fileInput.value = '';
+      fileInput.click();
     });
   });
 
-  document.addEventListener('click', () => clearSelection());
-
-  document.addEventListener('paste', e => {
-    if (!selectedImg) return;
-    const item = [...e.clipboardData.items].find(i => i.type.startsWith('image/'));
-    if (!item) return;
-    const blob = item.getAsFile();
+  fileInput.addEventListener('change', () => {
+    if (!fileInput.files[0] || !targetImg) return;
     const reader = new FileReader();
-    reader.onload = ev => { selectedImg.src = ev.target.result; };
-    reader.readAsDataURL(blob);
-    clearSelection();
+    reader.onload = ev => { targetImg.src = ev.target.result; };
+    reader.readAsDataURL(fileInput.files[0]);
   });
 </script>
 
 <style>
-  .compare-img img { cursor: pointer; transition: outline 0.1s; outline: 2px solid transparent; outline-offset: 3px; }
-  .compare-img img:hover { outline-color: rgba(108,99,255,0.5); }
-  .compare-img img.img-selected { outline: 2px solid var(--accent-light); outline-offset: 3px; }
-  .compare-img img.img-selected::after { content: 'Paste image'; }
+  .compare-img img { cursor: pointer; outline: 2px solid transparent; outline-offset: 3px; transition: outline-color 0.15s; border-radius: 8px; }
+  .compare-img img:hover { outline-color: var(--accent); }
 </style>
 </body>
 </html>
