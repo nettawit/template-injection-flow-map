@@ -525,9 +525,52 @@
   function changeSlide(dir) { goTo(current + dir); }
 
   document.addEventListener('keydown', e => {
+    if (selectedImg) return; // don't change slide while editing
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
   });
+
+  // ── PASTE-TO-REPLACE ──
+  let selectedImg = null;
+
+  function selectImg(img) {
+    if (selectedImg) selectedImg.classList.remove('img-selected');
+    selectedImg = img;
+    img.classList.add('img-selected');
+    img.scrollIntoView({ block: 'nearest' });
+  }
+
+  function clearSelection() {
+    if (selectedImg) selectedImg.classList.remove('img-selected');
+    selectedImg = null;
+  }
+
+  document.querySelectorAll('.compare-img img').forEach(img => {
+    img.addEventListener('click', e => {
+      e.stopPropagation();
+      selectImg(img);
+    });
+  });
+
+  document.addEventListener('click', () => clearSelection());
+
+  document.addEventListener('paste', e => {
+    if (!selectedImg) return;
+    const item = [...e.clipboardData.items].find(i => i.type.startsWith('image/'));
+    if (!item) return;
+    const blob = item.getAsFile();
+    const reader = new FileReader();
+    reader.onload = ev => { selectedImg.src = ev.target.result; };
+    reader.readAsDataURL(blob);
+    clearSelection();
+  });
 </script>
+
+<style>
+  .compare-img img { cursor: pointer; transition: outline 0.1s; outline: 2px solid transparent; outline-offset: 3px; }
+  .compare-img img:hover { outline-color: rgba(108,99,255,0.5); }
+  .compare-img img.img-selected { outline: 2px solid var(--accent-light); outline-offset: 3px; }
+  .compare-img img.img-selected::after { content: 'Paste image'; }
+</style>
 </body>
 </html>
