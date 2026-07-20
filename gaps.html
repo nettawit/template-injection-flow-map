@@ -217,90 +217,99 @@
     </div>
   </div>
 
-  <!-- SLIDE 2: WHAT WE TESTED -->
+  <!-- SLIDE 2: THE METHOD -->
   <div class="slide" id="slide-2">
     <div class="slide-inner">
-      <div class="eyebrow">Context</div>
-      <h2 class="slide-title">What we tested</h2>
-      <p class="slide-sub">We mapped Before / After results from template injection across a range of business types and scenarios.</p>
+      <div class="eyebrow">Research method</div>
+      <h2 class="slide-title">How the research was done</h2>
+      <p class="slide-sub">Manual testing across multiple templates and business types — in two rounds.</p>
       <div class="cards">
         <div class="card">
-          <div class="card-icon">🗂️</div>
-          <div class="card-title">Use case</div>
-          <div class="card-body">User selects a template, Aria collects business info, then injects personalized content into the template.</div>
+          <div class="card-icon">1️⃣</div>
+          <div class="card-title">Open a template</div>
+          <div class="card-body">Selected a range of Wix templates across different categories — fitness, fashion, marketing, art, SaaS. Each template has its own visual identity and layout.</div>
         </div>
         <div class="card">
-          <div class="card-icon">🔬</div>
-          <div class="card-title">What we looked at</div>
-          <div class="card-body">Text content, images, layout stability, brand alignment, and results across different business types.</div>
+          <div class="card-icon">2️⃣</div>
+          <div class="card-title">Round 1 — basic ask</div>
+          <div class="card-body">Asked Aria to replace the content and images to fit a specific business type. No additional guidance — just the business description.</div>
         </div>
         <div class="card">
-          <div class="card-icon">📐</div>
-          <div class="card-title">Scenarios tested</div>
-          <div class="card-body">Same business type with minor detail changes. Different business type, same template. With and without brand &amp; style instructions.</div>
+          <div class="card-icon">3️⃣</div>
+          <div class="card-title">Round 2 — with style anchor</div>
+          <div class="card-body">Asked again, this time adding: <em>"keep the same style and layout as the template."</em> Compared the two results side by side.</div>
         </div>
+      </div>
+      <div class="highlight-box" style="margin-top:16px;">
+        <div class="highlight-box-label">The question we were answering</div>
+        <div class="highlight-box-body">Does telling Aria to preserve the template's visual style produce a meaningfully better result — and if so, how much better?</div>
       </div>
     </div>
   </div>
 
-  <!-- SLIDE 3: WHAT WORKS -->
+  <!-- SLIDE 3: ROUND 1 — WITHOUT STYLE INSTRUCTION -->
   <div class="slide" id="slide-3">
     <div class="slide-inner">
-      <div class="eyebrow">Findings — What works</div>
-      <h2 class="slide-title">The good news</h2>
+      <div class="eyebrow">Round 1</div>
+      <h2 class="slide-title">"Change the content and images to fit [business type]"</h2>
+      <p class="slide-sub">The basic ask — no style or layout guidance. Aria personalizes the content, but without an anchor to the template's visual identity.</p>
       <div class="compare" style="margin-top:8px;">
         <div class="compare-col">
           <div class="compare-label before"><div class="dot yellow"></div> Original template</div>
           <div class="compare-body">
             <div class="compare-img">
-              <img src="assets/b-39.png" alt="R/NESS gym template before injection — bold dark hero" />
+              <img src="assets/before-row1.png" alt="Original template — clean layout, template-native copy" />
             </div>
-            <div class="compare-caption">Original R/NESS gym template — strong brand identity, bold B&W layout, generic placeholder copy.</div>
+            <div class="compare-caption">Template as-is — consistent visual identity, well-fitted copy, coherent layout. Click to replace with your screenshot.</div>
           </div>
         </div>
         <div class="compare-col">
-          <div class="compare-label after-good"><div class="dot green"></div> After injection — personalized</div>
+          <div class="compare-label after-bad"><div class="dot red"></div> After injection — style drifts</div>
           <div class="compare-body">
             <div class="compare-img">
-              <img src="assets/b-38.png" alt="R/NESS gym template after injection — REDEFINE YOUR LIMITS" />
+              <img src="assets/after-img11.png" alt="After injection without style instruction — partial, inconsistent result" />
             </div>
-            <div class="compare-caption">"REDEFINE YOUR LIMITS" — Aria injected relevant content, matched the visual tone, and kept the brand intact. Text, images, and structure all aligned.</div>
+            <div class="compare-caption">Business name appears in the nav, but the hero headline wasn't updated. Content is partial — Aria injected some elements but missed others. Visual coherence breaks.</div>
           </div>
         </div>
       </div>
       <ul class="bullets" style="margin-top:14px;">
-        <li><div class="dot green"></div><span><strong>Text quality is good.</strong> Aria generates relevant, on-brand copy that fits the business type.</span></li>
-        <li><div class="dot green"></div><span><strong>Images are thematically consistent.</strong> Injected images feel like they belong — not random stock.</span></li>
-        <li><div class="dot green"></div><span><strong>When business type matches template, it works well.</strong> Content, tone, and visual style stay coherent.</span></li>
+        <li><div class="dot yellow"></div><span>Content quality is there — the copy Aria generates is relevant and on-point.</span></li>
+        <li><div class="dot red"></div><span>Injection is partial — not all sections get updated consistently.</span></li>
+        <li><div class="dot red"></div><span>Without a style anchor, the result can feel disconnected from the original design.</span></li>
       </ul>
     </div>
   </div>
 
-  <!-- SLIDE 4: GAP 1 — TEXT BREAKS LAYOUT -->
+  <!-- SLIDE 4: ROUND 2 — WITH STYLE INSTRUCTION -->
   <div class="slide" id="slide-4">
     <div class="slide-inner">
-      <div class="tag gap">Gap 1</div>
-      <h2 class="slide-title">Text content breaks the layout</h2>
-      <p class="slide-sub">Aria generates text that's semantically correct, but doesn't account for character limits or layout constraints.</p>
-      <div class="compare">
+      <div class="tag finding">Key Finding</div>
+      <h2 class="slide-title">"…and keep the same style and layout as the template"</h2>
+      <p class="slide-sub">Adding one sentence changed the output significantly. When Aria is told to preserve the template's visual style, the result is more coherent, more complete, and feels like it belongs in the template.</p>
+      <div class="compare" style="margin-top:8px;">
         <div class="compare-col">
-          <div class="compare-label before"><div class="dot yellow"></div> Original template</div>
+          <div class="compare-label before"><div class="dot yellow"></div> Same template — original</div>
           <div class="compare-body">
             <div class="compare-img">
-              <img src="assets/before-row1.png" alt="Original template with clean layout" />
+              <img src="assets/b-39.png" alt="Original template before injection" />
             </div>
-            <div class="compare-caption">Layout holds with short, template-native copy. Text fits within designed containers. Hero headline is concise.</div>
+            <div class="compare-caption">Same starting point — same template, same business type asked. The only difference is the instruction. Click to replace with your screenshot.</div>
           </div>
         </div>
         <div class="compare-col">
-          <div class="compare-label after-bad"><div class="dot red"></div> After injection</div>
+          <div class="compare-label after-good"><div class="dot green"></div> After injection — style preserved</div>
           <div class="compare-body">
             <div class="compare-img">
-              <img src="assets/after-img11.png" alt="After injection — nav updated but hero text unchanged" />
+              <img src="assets/b-38.png" alt="After injection with style instruction — result is coherent and on-brand" />
             </div>
-            <div class="compare-caption">Business name injected into the nav ("EPS MARKETING") but the hero headline "Your Brand's Key to Better Marketing" wasn't updated — showing partial, inconsistent injection.</div>
+            <div class="compare-caption">With the style instruction, Aria stays true to the template's visual identity. Content feels like a natural extension of the design — not a forced overlay.</div>
           </div>
         </div>
+      </div>
+      <div class="highlight-box">
+        <div class="highlight-box-label">The instruction that made the difference</div>
+        <div class="highlight-box-body" style="font-style:italic; font-size:15px;">"Change the content and images to fit [business type] — and keep the same style and layout as the template."</div>
       </div>
     </div>
   </div>
@@ -308,9 +317,9 @@
   <!-- SLIDE 5: GAP 2 — IMAGES NOT IN APPS -->
   <div class="slide" id="slide-5">
     <div class="slide-inner">
-      <div class="tag gap">Gap 2</div>
-      <h2 class="slide-title">Images aren't injected into apps</h2>
-      <p class="slide-sub">Aria updates standard page sections, but Wix app widgets (Stores, Gallery, Bookings) are outside its injection scope — images stay unchanged.</p>
+      <div class="tag gap">Gap — still remains</div>
+      <h2 class="slide-title">Images in app widgets aren't updated</h2>
+      <p class="slide-sub">Even with the style instruction, Wix app widgets (Stores, Gallery, Bookings) are outside Aria's injection scope — their images stay unchanged regardless of what you ask.</p>
       <div class="compare">
         <div class="compare-col">
           <div class="compare-label after-good"><div class="dot green"></div> Page sections — updated correctly</div>
@@ -341,9 +350,9 @@
   <!-- SLIDE 6: GAP 3 — BIGGER PIVOTS -->
   <div class="slide" id="slide-6">
     <div class="slide-inner">
-      <div class="tag gap">Gap 3</div>
-      <h2 class="slide-title">Bigger pivots break the result</h2>
-      <p class="slide-sub">When the user's business type differs significantly from the template's original intent, injection results degrade — copy doesn't fit the context and structure becomes awkward.</p>
+      <div class="tag gap">Gap — still remains</div>
+      <h2 class="slide-title">Bigger pivots are still hard</h2>
+      <p class="slide-sub">The style instruction helps, but when the business type is very different from the template's original purpose, the structure itself becomes a constraint — content can't fully adapt to the wrong container.</p>
       <div class="compare">
         <div class="compare-col">
           <div class="compare-label after-good"><div class="dot green"></div> Same business type — works well</div>
@@ -372,83 +381,84 @@
     </div>
   </div>
 
-  <!-- SLIDE 7: FINDING — BRAND & STYLE -->
+  <!-- SLIDE 7: GAP — TEXT & LAYOUT -->
   <div class="slide" id="slide-7">
     <div class="slide-inner">
-      <div class="tag finding">Key Finding</div>
-      <h2 class="slide-title">Brand &amp; style instructions improve results</h2>
-      <p class="slide-sub">When Aria includes an explicit instruction to maintain the template's original visual brand and style, the output is noticeably more aligned — especially for text tone and image selection.</p>
-      <div class="compare">
+      <div class="tag gap">Gap — still remains</div>
+      <h2 class="slide-title">Injection can be incomplete</h2>
+      <p class="slide-sub">Even with the style instruction, not every section gets updated consistently. Some elements — like the hero headline — are sometimes skipped while others (like the nav) are updated. The result feels partial.</p>
+      <div class="compare" style="margin-top:8px;">
         <div class="compare-col">
-          <div class="compare-label before"><div class="dot yellow"></div> Without brand/style instruction</div>
+          <div class="compare-label before"><div class="dot yellow"></div> Original template</div>
           <div class="compare-body">
             <div class="compare-img">
-              <img src="assets/after-img11.png" alt="Injection without brand instruction — partial result" />
+              <img src="assets/before-row1.png" alt="Original template — all sections consistent" />
             </div>
-            <div class="compare-caption">No brand anchor — Aria updates the nav ("EPS MARKETING") but leaves the hero headline generic. The result is partial and disconnected from the template's visual identity.</div>
+            <div class="compare-caption">Template as-is — every section uses consistent copy tied to the template's purpose. Click to replace with your screenshot.</div>
           </div>
         </div>
         <div class="compare-col">
-          <div class="compare-label after-good"><div class="dot green"></div> With brand/style instruction</div>
+          <div class="compare-label after-bad"><div class="dot red"></div> After injection — partial update</div>
           <div class="compare-body">
             <div class="compare-img">
-              <img src="assets/b-40.png" alt="Aria instruction: keep same layout style and brand in the template" />
+              <img src="assets/after-img11.png" alt="After injection — nav updated, hero headline unchanged" />
             </div>
-            <div class="compare-caption">Adding "keep the same layout style and brand in the template" anchors Aria to the visual identity. Output is more coherent — injected content extends the design rather than overwriting it.</div>
+            <div class="compare-caption">Nav updated to "EPS MARKETING" but the hero headline still reads "Your Brand's Key to Better Marketing" — generic template copy left in place. Partial injection breaks the experience.</div>
           </div>
         </div>
       </div>
       <div class="highlight-box">
-        <div class="highlight-box-label">Recommendation</div>
-        <div class="highlight-box-body">Make brand &amp; style preservation a default system instruction in every injection prompt — not an optional addition. This is low-effort, high-impact.</div>
+        <div class="highlight-box-label">The pattern</div>
+        <div class="highlight-box-body">Aria tends to update some sections confidently (nav, short text blocks) while leaving others untouched (hero headlines, longer body sections). The inconsistency is noticeable to the user.</div>
       </div>
     </div>
   </div>
 
-  <!-- SLIDE 8: GAP SUMMARY TABLE -->
+  <!-- SLIDE 8: SUMMARY -->
   <div class="slide" id="slide-8">
     <div class="slide-inner">
       <div class="eyebrow">Summary</div>
-      <h2 class="slide-title">Gap map</h2>
+      <h2 class="slide-title">What we learned</h2>
+      <div style="margin-bottom:18px; padding:14px 18px; background: rgba(108,99,255,0.08); border: 1px solid rgba(108,99,255,0.25); border-radius:10px;">
+        <div style="font-size:12px; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; color:var(--accent-light); margin-bottom:6px;">Core finding</div>
+        <div style="font-size:15px; line-height:1.6;">Adding <strong>"keep the same style and layout"</strong> to the injection prompt produces significantly better results — content feels like it belongs in the template, not forced into it.</div>
+      </div>
       <table class="gap-table">
         <thead>
           <tr>
-            <th>Gap</th>
-            <th>What breaks</th>
+            <th>Issue</th>
+            <th>What happens</th>
             <th>Impact</th>
-            <th>Status</th>
+            <th>Fix</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Text breaks layout</strong></td>
-            <td>Injected copy overflows containers; partial injection leaves hero unchanged while nav is updated</td>
+            <td><strong>No style instruction</strong></td>
+            <td>Content drifts from template identity; partial updates; visual incoherence</td>
+            <td><span class="impact high">High</span></td>
+            <td style="color:var(--green);">Prompt fix</td>
+          </tr>
+          <tr>
+            <td><strong>Incomplete injection</strong></td>
+            <td>Some sections updated (nav), others skipped (hero) — inconsistent experience</td>
             <td><span class="impact high">High</span></td>
             <td>Open</td>
           </tr>
           <tr>
-            <td><strong>Images not in apps</strong></td>
-            <td>Gallery, Stores, Bookings widgets keep original placeholder images</td>
+            <td><strong>Images in app widgets</strong></td>
+            <td>Gallery, Stores, Bookings images unchanged — mismatch with updated sections</td>
             <td><span class="impact high">High</span></td>
             <td>Open</td>
           </tr>
           <tr>
-            <td><strong>Bigger pivots break</strong></td>
-            <td>Templates with a different business type than the user's don't adapt well</td>
+            <td><strong>Big business type pivots</strong></td>
+            <td>Template structure too rigid for very different business types</td>
             <td><span class="impact med">Medium</span></td>
             <td>Open</td>
-          </tr>
-          <tr>
-            <td><strong>Brand/style not anchored</strong></td>
-            <td>Without brand instruction, injection feels disconnected from template identity</td>
-            <td><span class="impact med">Medium</span></td>
-            <td>Fixable in prompt</td>
           </tr>
         </tbody>
       </table>
-      <div style="margin-top:18px; padding:13px 17px; background: var(--surface); border: 1px solid var(--border); border-radius:10px; font-size:13px; color: var(--text-muted);">
-        ✅ <strong style="color: var(--text);">What works:</strong> Text quality, image family consistency, small pivots, brand-instructed injection results
-      </div>
     </div>
   </div>
 
